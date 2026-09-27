@@ -3,335 +3,3955 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Marvel Pixel Clash — HTML5</title>
+<title>Marvel Pixel Clash</title>
 <style>
-:root{--bg:#070b14;--panel:#0f1626;--panel2:#151f34;--line:#334568;--text:#edf3ff;--muted:#8291b6;--gold:#ffd24d;--red:#ff5267;--blue:#59a7ff;--green:#61e78e;--violet:#b981ff}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}button{font:inherit}
-#app{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle at 50% 10%,#203052 0,#0b101c 48%,#03050a 100%)}
-#shell{position:relative;width:min(1320px,100vw);height:min(820px,100vh);overflow:hidden;background:#0a0f1b;border:1px solid #33415d;box-shadow:0 30px 100px #000}
-#canvas{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
-.panel{position:absolute;z-index:4;inset:0;background:#050914c9;backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center}
-.card{width:min(1120px,94%);max-height:92%;overflow:auto;background:linear-gradient(180deg,#101827f7,#0b101cf7);border:1px solid #3c4d71;box-shadow:0 30px 90px #000;padding:22px}
-.brand{display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:18px}.logo{font-weight:1000;letter-spacing:2px;font-size:28px;text-shadow:3px 3px #000}.sub{color:var(--muted);font-size:12px}
-.topnav{display:flex;gap:8px;flex-wrap:wrap}.tab{border:1px solid var(--line);background:#111a2d;color:#c9d4ee;padding:9px 12px;cursor:pointer;border-radius:6px}.tab.active{border-color:var(--gold);color:#fff;background:#2a2412}
-.balance{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}.chip{padding:7px 10px;border:1px solid #33425f;background:#0b1221;color:#dfe7ff;border-radius:6px;font-size:12px}.chip b{color:#fff}.gold{color:var(--gold)}.gem{color:#8dc2ff}
-.sectionTitle{font-weight:900;font-size:18px;margin:14px 0 10px}.muted{color:var(--muted)}
-.roster{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}.heroCard{position:relative;padding:10px;border:1px solid #2d3b58;background:#10192a;cursor:pointer;min-height:120px}.heroCard:hover{border-color:#6f85b6;transform:translateY(-1px)}.heroCard.active{border-color:var(--gold);box-shadow:0 0 0 1px #ffd24d33 inset}.portrait{height:48px;display:flex;align-items:center;justify-content:center;font-size:28px;text-shadow:3px 3px #000}.heroName{font-weight:900;font-size:13px}.heroMeta{font-size:10px;color:#8f9dbb;margin-top:3px}.classTag{position:absolute;right:5px;top:5px;font-size:9px;padding:3px 5px;background:#0b1120;border:1px solid #2e3a54;color:#aab8d4}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.primary,.secondary,.danger{border:0;padding:11px 15px;cursor:pointer;font-weight:900;border-radius:6px}.primary{background:var(--gold);color:#19140a}.secondary{background:#22304b;color:#fff;border:1px solid #3d5277}.danger{background:#48202a;color:#ffdbe0;border:1px solid #76404a}
-.layout2{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}.box{background:#0c1424;border:1px solid #2b3b58;padding:14px}.box h3{margin:0 0 10px;font-size:15px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#111b2e;border:1px solid #293854;padding:10px}.stat b{display:block;font-size:17px}.progress{height:9px;background:#171e2d;border:1px solid #293750}.progress>i{display:block;height:100%;background:linear-gradient(90deg,#5ca9ff,#b47cff);width:0}
-.skillGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.skillCard{border:1px solid #2d3b58;background:#11192b;padding:10px;position:relative}.skillCard.locked{opacity:.72}.skillHead{display:flex;justify-content:space-between;gap:8px}.skillHead b{font-size:12px}.skillDesc{color:#93a2c2;font-size:10px;line-height:1.4;margin:6px 0}.unlock{font-size:10px;color:#ffd36c}.skillBtn{margin-top:7px;width:100%;padding:8px;border:0;background:#28395c;color:#fff;cursor:pointer;font-weight:800}.skillBtn:disabled{opacity:.35;cursor:not-allowed}
-.rankRows{display:grid;gap:7px}.rankRow{display:flex;justify-content:space-between;gap:10px;border:1px solid #2b3b58;padding:9px;background:#0f1828}.rankRow.current{border-color:var(--gold);background:#27200e}.rankName{font-weight:900}.rankPts{font-size:11px;color:#98a7c5}
-#matchPanel .card{max-width:700px;text-align:center}.searchRing{width:110px;height:110px;margin:15px auto;border:5px solid #202c47;border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
-#hud{position:absolute;inset:0;z-index:3;pointer-events:none}.topBar{position:absolute;left:14px;right:14px;top:10px;display:flex;justify-content:space-between;gap:12px}.fighterUI{width:39%;}.uname{font-weight:900;font-size:12px;margin-bottom:4px;text-shadow:2px 2px #000}.meter{height:19px;border:2px solid #f1f5ff;background:#101623}.hpFill{height:100%;background:linear-gradient(90deg,#ff687a,#b41c3a)}.manaFill{height:100%;background:linear-gradient(90deg,#68b4ff,#425ce0)}.meter2{height:8px;margin-top:4px;border:1px solid #31415c;background:#101623}.centerRound{font-size:12px;font-weight:900;background:#080c15d8;padding:5px 9px;border:1px solid #344460;height:max-content}.controls{position:absolute;right:14px;top:72px;font-size:10px;color:#90a0c0;background:#060b14aa;padding:6px;border:1px solid #263652}
-.skillBar{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:7px;pointer-events:auto}.slot{width:68px;height:60px;background:#0e1627ee;border:2px solid #43577d;color:#fff;position:relative;cursor:pointer}.slot b{display:block;font-size:18px}.slot span{font-size:9px;white-space:nowrap;display:block;overflow:hidden;text-overflow:ellipsis;padding:0 3px}.slot small{position:absolute;right:4px;top:3px;color:#97c5ff;font-size:8px}.slot .cool{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#000b;font-size:18px}.slot.locked{opacity:.35}.comboUI{position:absolute;left:16px;top:90px;font-weight:1000;font-size:18px;text-shadow:3px 3px #000;color:#ffd35b;opacity:0;transform:translateY(7px)}.comboUI.show{opacity:1;transform:none}.announce{position:absolute;left:50%;top:26%;transform:translate(-50%,-50%);font-weight:1000;font-size:34px;text-shadow:5px 5px #000;pointer-events:none;opacity:0}.announce.show{animation:ann 1.1s forwards}@keyframes ann{0%{opacity:0;transform:translate(-50%,-40%) scale(.7)}20%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-60%) scale(1.1)}}
-.pe{display:none;position:absolute;left:10px;bottom:8px;gap:7px;pointer-events:auto}.dpad{display:grid;grid-template-columns:44px 44px 44px;gap:4px}.dpad button,.peSkill{width:44px;height:44px;border:1px solid #5a6c94;background:#101a2dcc;color:#fff;font-weight:1000}.actionsPE{display:grid;grid-template-columns:repeat(2,44px);gap:4px}.empty{visibility:hidden}
-#resultPanel .card{max-width:560px;text-align:center}.resultTitle{font-size:36px;font-weight:1000}.resultSub{color:#9ba8c3;margin:8px 0 18px}.reward{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-bottom:16px}
-.toast{position:absolute;left:50%;bottom:82px;transform:translateX(-50%) translateY(20px);background:#0a101dcc;border:1px solid #3e5074;padding:10px 13px;font-size:11px;opacity:0;transition:.18s;z-index:10}.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media(max-width:1000px){.roster{grid-template-columns:repeat(4,1fr)}.layout2{grid-template-columns:1fr}.controls{display:none}.pe{display:flex}.card{padding:15px}}
-@media(max-width:650px){.roster{grid-template-columns:repeat(3,1fr)}.heroCard{min-height:105px}.topBar{top:7px}.fighterUI{width:36%}.skillBar{gap:3px}.slot{width:54px;height:54px}.slot span{font-size:8px}.logo{font-size:21px}.sub{display:none}.stats{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:470px){.roster{grid-template-columns:repeat(2,1fr)}.fighterUI{width:40%}.centerRound{font-size:10px}.skillBar{bottom:2px}.slot{width:47px;height:48px}.slot span{display:none}.pe{transform:scale(.9);transform-origin:left bottom}.card{max-height:94%}}
+:root{--bg:#050812;--p:#0d1424;--p2:#121b30;--line:#364867;--t:#eff4ff;--m:#8d9abb;--gold:#ffd34d;--red:#ff596e;--blue:#64adff}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--t);font-family:Arial,Helvetica,sans-serif}body{touch-action:none}button{font:inherit}
+#app{position:fixed;inset:0;display:grid;place-items:center;background:radial-gradient(circle at 50% 0,#253354,#090e19 48%,#020307)}
+#game{position:relative;width:min(1360px,100vw);height:min(840px,100vh);overflow:hidden;background:#0a101c;border:1px solid #3b4d6e;box-shadow:0 30px 120px #000}
+#cv{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+.panel{position:absolute;inset:0;z-index:30;display:flex;align-items:center;justify-content:center;background:#030711df;backdrop-filter:blur(7px);pointer-events:auto}.hidden{display:none!important}
+.card{width:min(1180px,95%);max-height:94%;overflow:auto;padding:20px;background:linear-gradient(#111a2df7,#09101cf7);border:1px solid #435476;box-shadow:0 30px 100px #000}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:14px;margin-bottom:12px}.logo{font-size:28px;font-weight:1000;letter-spacing:2px;text-shadow:4px 4px #000}.sub{font-size:11px;color:var(--m)}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}.tab,.btn,.buy,.skillBtn{border:1px solid var(--line);background:#111a2d;color:#dbe5fb;border-radius:5px;padding:9px 12px;cursor:pointer;font-weight:900}.tab.active{border-color:var(--gold);background:#2c2512}.primary{background:var(--gold);color:#171108;border-color:#ffe37d}.danger{background:#46202a;color:#ffdce2;border-color:#77414e}
+.balance{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px}.chip{font-size:11px;padding:7px 10px;border:1px solid #2e3e5b;background:#0b1221;border-radius:5px}.gold{color:var(--gold)}.gem{color:#8fc5ff}
+.grid{display:grid;grid-template-columns:1.3fr .7fr;gap:12px}.box{background:#0c1424;border:1px solid #2d3e5b;padding:12px}.title{font-weight:1000;font-size:17px;margin:11px 0 8px}.muted{color:var(--m)}
+.roster{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.hero{position:relative;min-height:102px;padding:8px;border:1px solid #2a3b59;background:#10192a;cursor:pointer}.hero.active{border-color:var(--gold);box-shadow:0 0 0 1px #ffd34d33 inset}.hero.locked{opacity:.53;filter:saturate(.35)}.hero .tag{position:absolute;right:4px;top:4px;font-size:8px;padding:3px 4px;background:#090f1d;border:1px solid #34425c}.emo{height:34px;display:grid;place-items:center;font-size:23px;text-shadow:3px 3px #000}.hn{font-size:11px;font-weight:1000}.hm{font-size:8px;color:#91a0bd;margin-top:3px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.stat{border:1px solid #293957;background:#111a2c;padding:8px}.stat b{display:block;font-size:15px;margin-top:2px}.skills{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}.skillCard{border:1px solid #2c3c59;background:#10192b;padding:8px}.skillCard.lock{opacity:.65}.st{display:flex;justify-content:space-between;font-size:10px}.sd{font-size:8px;color:#94a2be;line-height:1.35;margin:5px 0}.sc{font-size:8px;color:#ffd66b}
+.shop{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}.shopItem{border:1px solid #293956;background:#10192a;padding:8px}.shopItem b{font-size:11px}.shopItem small{display:block;color:#8e9dbb;font-size:8px;min-height:28px;margin:5px 0}.buy{width:100%;padding:7px;font-size:9px}
+.rank{display:grid;gap:6px}.rr{display:flex;justify-content:space-between;border:1px solid #2d3d5a;background:#10192a;padding:9px}.rr.cur{border-color:var(--gold);background:#28200e}.rname{font-weight:1000}.rpts{font-size:9px;color:#98a7c4}
+#match .card,#result .card{text-align:center;max-width:650px}.ring{width:100px;height:100px;margin:18px auto;border:6px solid #202b45;border-top-color:var(--gold);border-radius:50%;animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.big{font-size:40px;font-weight:1000;text-shadow:5px 5px #000}.actions{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-top:14px}
+#hud{position:absolute;inset:0;z-index:20;pointer-events:none}.top{position:absolute;top:8px;left:14px;right:14px;display:flex;justify-content:space-between;gap:12px}.fighter{width:38%}.name{font-size:11px;font-weight:1000;text-shadow:2px 2px #000;margin-bottom:3px}.meter{height:18px;border:2px solid #eef4ff;background:#121827}.hp{height:100%;background:linear-gradient(90deg,#ff6d7c,#b31d39)}.mana{height:7px;margin-top:4px;border:1px solid #2d3f5c;background:linear-gradient(90deg,#62b5ff,#3d58df)}.center{align-self:flex-start;background:#070b14e8;border:1px solid #394966;padding:5px 8px;font-size:10px;font-weight:1000}.keys{position:absolute;right:14px;top:63px;background:#050911aa;border:1px solid #273856;padding:5px;font-size:9px;color:#8f9db9}.combo{position:absolute;left:15px;top:90px;font-size:18px;font-weight:1000;color:#ffd45b;text-shadow:3px 3px #000;opacity:0}.combo.on{opacity:1}.announce{position:absolute;left:50%;top:27%;transform:translate(-50%,-50%);font-size:36px;font-weight:1000;text-shadow:5px 5px #000;opacity:0}.announce.on{animation:ann 1s forwards}@keyframes ann{0%{opacity:0;transform:translate(-50%,-45%) scale(.6)}15%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-65%) scale(1.15)}}
+.skillbar{position:absolute;left:50%;bottom:10px;transform:translateX(-50%);display:flex;gap:6px;pointer-events:auto}.slot{position:relative;width:69px;height:59px;border:2px solid #475e86;background:#0d1627ed;color:#fff;cursor:pointer}.slot b{display:block;font-size:18px}.slot span{display:block;font-size:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.slot small{position:absolute;top:3px;right:3px;font-size:7px;color:#9fc7ff}.slot .cd{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:#000b;font-size:17px}.slot.lock{opacity:.3}
+.pe{display:none;position:absolute;left:8px;bottom:8px;gap:6px;pointer-events:auto}.dpad{display:grid;grid-template-columns:42px 42px 42px;gap:4px}.dpad button,.pe button{width:42px;height:42px;background:#101a2dcc;color:#fff;border:1px solid #60739e;font-weight:1000}.acts{display:grid;grid-template-columns:repeat(2,42px);gap:4px}.empty{visibility:hidden}
+.toast{position:absolute;z-index:100;left:50%;bottom:80px;transform:translateX(-50%) translateY(15px);background:#0a101deF;border:1px solid #415372;padding:9px 12px;font-size:10px;opacity:0;transition:.18s}.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+@media(max-width:1050px){.roster{grid-template-columns:repeat(4,1fr)}.shop{grid-template-columns:repeat(4,1fr)}}
+@media(max-width:900px){.grid{grid-template-columns:1fr}.roster{grid-template-columns:repeat(4,1fr)}.shop{grid-template-columns:repeat(3,1fr)}.keys{display:none}.pe{display:flex}.card{padding:14px}}
+@media(max-width:650px){.roster{grid-template-columns:repeat(3,1fr)}.shop{grid-template-columns:repeat(2,1fr)}.fighter{width:37%}.skillbar{gap:3px;bottom:2px}.slot{width:52px;height:51px}.slot span{display:none}.logo{font-size:21px}.top{left:7px;right:7px}.center{font-size:8px}}
+@media(max-width:470px){.roster{grid-template-columns:repeat(2,1fr)}.fighter{width:40%}.slot{width:46px;height:48px}.pe{transform:scale(.86);transform-origin:left bottom}}
 </style>
 </head>
 <body>
-<div id="app"><div id="shell">
-<canvas id="canvas" width="1280" height="800"></canvas>
+<div id="app"><div id="game"><canvas id="cv" width="1280" height="800"></canvas>
 
-<!-- MAIN MENU -->
-<div id="menuPanel" class="panel">
-<div class="card">
-  <div class="brand"><div><div class="logo">MARVEL PIXEL CLASH</div><div class="sub">Original fan-made HTML5 pixel arena — no backend</div></div><div class="topnav"><button class="tab active" data-tab="heroes">HEROES</button><button class="tab" data-tab="skills">SKILL TREE</button><button class="tab" data-tab="rank">RANK</button></div></div>
-  <div class="balance"><div class="chip">GOLD <b id="goldVal" class="gold">0</b></div><div class="chip">GEMS <b id="gemVal" class="gem">0</b></div><div class="chip">RANK <b id="rankVal">Bronze</b></div><div class="chip">MMR <b id="mmrVal">0</b></div><div class="chip">WINS <b id="winsVal">0</b></div></div>
-  <div id="tabHeroes">
-    <div class="layout2"><div><div class="sectionTitle">Choose your hero</div><div id="roster" class="roster"></div></div><div><div class="box"><h3 id="previewTitle">Spider-Man</h3><div id="previewStats" class="stats"></div><div class="sectionTitle" style="font-size:14px">Skills</div><div id="previewSkills" class="skillGrid"></div></div><div class="actions"><button id="matchBtn" class="primary">⚔ MATCHMAKING</button><button id="resetBtn" class="danger">Reset Save</button></div></div></div>
-  </div>
-  <div id="tabSkills" class="hidden"><div class="sectionTitle">Skill Tree</div><div class="box"><div id="skillTree"></div></div></div>
-  <div id="tabRank" class="hidden"><div class="sectionTitle">Rank Ladder</div><div id="rankRows" class="rankRows"></div></div>
-  <div class="note" style="margin-top:16px">PC: A/D hoặc ←/→ • J basic • SPACE jump • Q/W/E/R skills • P hide HUD • 1/2/3/4 cũng dùng skill • Mobile có nút cảm ứng.</div>
+<div id="menu" class="panel"><div class="card">
+<div class="brand"><div><div class="logo">MARVEL PIXEL CLASH</div><div class="sub">2D PIXEL HERO ARENA • HTML5 • PC + PE</div></div><div class="tabs"><button class="tab active" data-tab="heroes">HEROES</button><button class="tab" data-tab="skills">SKILL TREE</button><button class="tab" data-tab="shop">SHOP</button><button class="tab" data-tab="rank">RANK</button></div></div>
+<div class="balance"><div class="chip">GOLD <b id="gold">0</b></div><div class="chip">GEMS <b id="gems">0</b></div><div class="chip">RANK <b id="rank">Bronze</b></div><div class="chip">MMR <b id="mmr">0</b></div><div class="chip">WINS <b id="wins">0</b></div><div class="chip">LOSSES <b id="losses">0</b></div></div>
+<div id="tabHeroes"><div class="grid"><div><div class="title">Choose Hero <span id="count" class="muted"></span></div><div id="roster" class="roster"></div></div><div><div class="box"><h3 id="previewName" style="margin:0 0 8px">Spider-Man</h3><div id="previewStats" class="stats"></div><div class="title" style="font-size:14px">SIGNATURE SKILLS</div><div id="previewSkills" class="skills"></div></div><div class="actions"><button id="matchBtn" class="btn primary">⚔ MATCHMAKING</button><button id="resetBtn" class="btn danger">RESET</button></div></div></div></div>
+<div id="tabSkills" class="hidden"><div class="title">Skill Tree — <span id="skillHero" class="muted"></span></div><div class="box"><div id="skillTree" class="skills"></div></div></div>
+<div id="tabShop" class="hidden"><div class="title">Hero Shop</div><div id="shopGrid" class="shop"></div></div>
+<div id="tabRank" class="hidden"><div class="title">Rank Ladder</div><div id="rankRows" class="rank"></div></div>
+<div class="sub" style="margin-top:12px">PC: A/D hoặc ←/→ • J Attack • SPACE Jump • Q/W/E/R Skill • 1/2/3/4 Skill • P Hide HUD</div>
 </div></div>
 
-<!-- MATCHMAKING -->
-<div id="matchPanel" class="panel hidden"><div class="card"><div class="logo">SEARCHING FOR MATCH</div><div class="searchRing"></div><div id="matchText" class="sub">Đang mô phỏng matchmaking theo MMR…</div><div id="matchTimer" style="font-size:28px;font-weight:1000;margin:10px 0">0.0s</div><button id="cancelMatch" class="secondary">HỦY</button></div></div>
+<div id="match" class="panel hidden"><div class="card"><div class="logo">MATCHMAKING</div><div class="ring"></div><div id="mt">0.0s</div><div id="ms" class="sub" style="margin:7px 0 12px"></div><button id="cancel" class="btn">CANCEL</button></div></div>
 
-<!-- HUD -->
-<div id="hud" class="hidden">
- <div class="topBar">
-  <div class="fighterUI"><div id="pName" class="uname">PLAYER</div><div class="meter"><div id="pHp" class="hpFill"></div></div><div class="meter2"><div id="pMana" class="manaFill"></div></div></div>
-  <div class="centerRound">ROUND <span id="roundNum">1</span> · <span id="roundTime">60</span>s</div>
-  <div class="fighterUI"><div id="eName" class="uname" style="text-align:right">CPU</div><div class="meter"><div id="eHp" class="hpFill"></div></div><div class="meter2"><div id="eMana" class="manaFill"></div></div></div>
- </div>
- <div id="controls" class="controls">J ATTACK · Q W E R SKILLS<br>A/D MOVE · SPACE JUMP · P HUD</div>
- <div id="comboUI" class="comboUI">0 HIT COMBO</div>
- <div id="announce" class="announce"></div>
- <div id="skillBar" class="skillBar"></div>
- <div class="pe"><div class="dpad"><button class="empty"></button><button data-hold="space">▲</button><button class="empty"></button><button data-hold="a">◀</button><button data-hold="d">▶</button><button class="empty"></button></div><div class="actionsPE"><button class="peSkill" data-key="j">ATK</button><button class="peSkill" data-key="q">Q</button><button class="peSkill" data-key="w">W</button><button class="peSkill" data-key="e">E</button><button class="peSkill" data-key="r">R</button></div></div>
-</div>
+<div id="hud" class="hidden"><div class="top"><div class="fighter"><div id="pn" class="name">PLAYER</div><div class="meter"><div id="ph" class="hp"></div></div><div class="mana"><div id="pm"></div></div></div><div class="center">ROUND 1<br><span id="timer">60</span>s</div><div class="fighter"><div id="en" class="name" style="text-align:right">CPU</div><div class="meter"><div id="eh" class="hp" style="float:right"></div></div><div class="mana"><div id="em" style="float:right"></div></div></div></div><div class="keys">J ATTACK • Q W E R SKILLS<br>A/D MOVE • SPACE JUMP • P HUD</div><div id="combo" class="combo">0 HIT COMBO</div><div id="announce" class="announce"></div><div id="skillbar" class="skillbar"></div><div class="pe"><div class="dpad"><button class="empty"></button><button data-hold="space">▲</button><button class="empty"></button><button data-hold="a">◀</button><button data-hold="d">▶</button><button class="empty"></button></div><div class="acts"><button data-key="j">ATK</button><button data-key="q">Q</button><button data-key="w">W</button><button data-key="e">E</button><button data-key="r">R</button></div></div></div>
 
-<!-- RESULT -->
-<div id="resultPanel" class="panel hidden"><div class="card"><div id="resultTitle" class="resultTitle">VICTORY</div><div id="resultSub" class="resultSub"></div><div id="reward" class="reward"></div><div class="actions" style="justify-content:center"><button id="rematchBtn" class="primary">⚔ REMATCH</button><button id="menuBtn" class="secondary">MAIN MENU</button></div></div></div>
+<div id="result" class="panel hidden"><div class="card"><div id="resultTitle" class="big">VICTORY</div><div id="resultSub" class="sub" style="margin:8px 0 15px"></div><div id="reward" class="balance" style="justify-content:center"></div><div class="actions"><button id="rematch" class="btn primary">⚔ REMATCH</button><button id="main" class="btn">MAIN MENU</button></div></div></div>
 <div id="toast" class="toast"></div>
 </div></div>
 
 <script>
 'use strict';
 
-/* ==========================================================
-   MARVEL PIXEL CLASH
-   One-file HTML5 prototype. No backend. Saves to LocalStorage.
-   The characters/abilities are fan-made, original pixel gameplay
-   representations inspired by superhero archetypes.
-========================================================== */
-
-const canvas=document.getElementById('canvas'),ctx=canvas.getContext('2d');
+const cv=document.getElementById('cv');
+const ctx=cv.getContext('2d');
 ctx.imageSmoothingEnabled=false;
-const W=1280,WORLD_H=800,G=665;
-const SAVE_KEY='marvel_pixel_clash_save_v1';
+
+const W=1280,H=800,G=665;
+const SAVE='MPC_SAVE_V3';
+
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const rand=(a,b)=>Math.random()*(b-a)+a;
 const pick=a=>a[(Math.random()*a.length)|0];
-const dist=(a,b)=>Math.abs(a.x-b.x);
 
-/* ---------- 50-HERO DATA SCHEMA ---------- */
-const skill=(key,name,cost,cd,kind,desc,unlock)=>({key,name,cost,cd,kind,desc,unlock});
-const makeHero=(id,name,emoji,cls,color,hp,spd,heroSkills)=>({id,name,emoji,cls,color,hp,spd,skills:heroSkills} );
-const K={
-  bolt:(k,n,c,cd,d,u=0)=>skill(k,n,c,cd,'bolt',d,u),
-  dash:(k,n,c,cd,d,u=0)=>skill(k,n,c,cd,'dash',d,u),
-  aoe:(k,n,c,cd,d,u=0)=>skill(k,n,c,cd,'aoe',d,u),
-  heal:(k,n,c,cd,d,u=0)=>skill(k,n,c,cd,'heal',d,u),
-  beam:(k,n,c,cd,d,u=0)=>skill(k,n,c,cd,'beam',d,u),
-  ult:(k,n,c,cd,d,u=0)=>skill(k,n,c,cd,'ult',d,u),
-  bind:(k,n,c,cd,d,u=0)=>skill(k,n,c,cd,'bind',d,u)
-};
-const heroes=[
-makeHero('spiderman','Spider-Man','🕷️','Assassin','#d9364e',100,330,[K.bolt('Q','Web Shot',0,0.7,'Fast web projectile'),K.dash('W','Web Swing',20,3.0,'Long dash that leaves a web trail',500),K.bind('E','Spider Sense',30,5.0,'Brief slow + evasive web pulse',1000),K.ult('R','Web Cyclone',55,11,'Huge web vortex',1400)]),
-makeHero('ironman','Iron Man','🤖','Marksman','#e23a42',95,295,[K.bolt('Q','Repulsor',0,0.45,'Arm cannon bolt'),K.beam('W','Unibeam',20,3.2,'Piercing chest beam',500),K.bolt('E','Micro Missiles',30,5.2,'Tracking missile volley',1000),K.ult('R','Orbital Laser',60,12,'Full-screen laser strike',1400)]),
-makeHero('thor','Thor','⚡','Bruiser','#7da6ff',118,270,[K.bolt('Q','Mjolnir Throw',0,0.75,'Hammer projectile',),K.aoe('W','Lightning Call',20,2.7,'Lightning zone',500),K.dash('E','God Leap',30,4.5,'Leaping hammer rush',1000),K.ult('R','Ragnarok Storm',60,12,'Massive lightning storm',1400)]),
-makeHero('doctorstrange','Doctor Strange','🌀','Mage','#ff9a3d',92,270,[K.bolt('Q','Arcane Bolt',0,0.5,'Magic projectile'),K.bind('W','Crimson Bands',20,2.7,'Rooting magic bands',500),K.dash('E','Portal Step',30,4.8,'Blink through a portal',1000),K.ult('R','Mirror Dimension',60,12,'Reality-bending arena burst',1400)]),
-makeHero('scarletwitch','Scarlet Witch','🔴','Mage','#da4b86',88,255,[K.bolt('Q','Chaos Bolt',0,0.5,'Chaos projectile'),K.bind('W','Hex Bind',22,2.6,'Chaos slow field',500),K.aoe('E','Mind Shatter',32,5.0,'Heavy psychic burst',1000),K.ult('R','Chaos Storm',65,12,'Screen-wide chaos barrage',1400)]),
-makeHero('hulk','Hulk','💚','Tank','#59c94a',150,230,[K.aoe('Q','Smash',0,0.9,'Heavy close strike'),K.aoe('W','Ground Slam',20,2.8,'Shockwave knockback',500),K.dash('E','Gamma Rush',30,4.8,'Charging rush',1000),K.ult('R','Worldbreaker',60,12,'Massive ground explosion',1400)]),
-makeHero('wolverine','Wolverine','🐺','Bruiser','#e4c32d',112,320,[K.aoe('Q','Claw Slash',0,0.45,'Fast claw strike'),K.dash('W','Berserker Dash',20,2.5,'Claw dash',500),K.heal('E','Regeneration',28,5.5,'Restore health',1000),K.ult('R','Berserker Fury',58,11,'Multi-slash frenzy',1400)]),
-makeHero('captainamerica','Captain America','🛡️','Tank','#4b78df',112,285,[K.bolt('Q','Shield Toss',0,0.75,'Returning shield'),K.dash('W','Shield Bash',20,2.6,'Dash and stun'),K.bind('E','Ricochet',30,5.0,'Multi-hit shield bounce',1000),K.ult('R','Avengers Charge',58,11,'Powerful shield rush',1400)]),
-makeHero('deadpool','Deadpool','🔴','Assassin','#cf313d',101,315,[K.aoe('Q','Twin Slash',0,0.45,'Dual blade hit'),K.bolt('W','Gun Burst',20,1.9,'Rapid bullets'),K.dash('E','Teleport Slice',30,4.7,'Blink slash',1000),K.ult('R','Maximum Effort',58,11,'Wild combo barrage',1400)]),
-makeHero('blackpanther','Black Panther','🐾','Assassin','#9d6bff',108,325,[K.aoe('Q','Claw Swipe',0,0.42,'Fast claw'),K.dash('W','Shadow Dash',18,2.2,'Shadow dash'),K.aoe('E','Kinetic Burst',30,4.8,'Release stored energy',1000),K.ult('R','Vibranium Rush',56,10.8,'Kinetic super rush',1400)]),
-makeHero('loki','Loki','🪄','Mage','#4cbf7d',95,290,[K.bolt('Q','Green Bolt',0,0.5,'Energy bolt'),K.dash('W','Illusion Step',20,2.4,'Teleport feint'),K.bind('E','Mind Trick',30,4.8,'Confuse + slow',1000),K.ult('R','Grand Illusion',58,11.5,'Multiple illusion strikes',1400)]),
-makeHero('thanos','Thanos','💜','Tank','#8c5bc4',160,225,[K.aoe('Q','Titan Punch',0,0.9,'Crushing punch'),K.beam('W','Power Beam',22,2.8,'Power blast'),K.bind('E','Reality Crush',34,5.3,'Gravity crush',1000),K.ult('R','Snap',70,13,'Massive reality burst',1800)]),
-makeHero('venom','Venom','🖤','Bruiser','#607070',122,305,[K.aoe('Q','Symbiote Bite',0,0.65,'Close symbiote strike'),K.dash('W','Tendril Rush',20,2.6,'Tendril dash',500),K.bolt('E','Symbiote Spear',28,4.6,'Long tendril shot',1000),K.ult('R','Carnage Mode',60,11.5,'Huge symbiote frenzy',1400)]),
-makeHero('blackwidow','Black Widow','🕷','Assassin','#b63d45',96,325,[K.bolt('Q','Widow Bite',0,0.5,'Shock shot'),K.dash('W','Acrobat Dash',18,2.3,'Fast acrobat dash',500),K.bind('E','Widow Line',26,4.7,'Trip line stun',1000),K.ult('R','Red Room Barrage',55,10.8,'Bullet + kick combo',1400)]),
-makeHero('hawkeye','Hawkeye','🏹','Marksman','#a5a8b3',98,315,[K.bolt('Q','Arrow Shot',0,0.45,'Arrow projectile'),K.bolt('W','Explosive Arrow',20,2.6,'AoE arrow',500),K.bind('E','Cable Arrow',25,4.5,'Pull + root',1000),K.ult('R','Trick Arrow Storm',54,10.5,'Rain of arrows',1400)]),
-makeHero('captainmarvel','Captain Marvel','⭐','Bruiser','#eaa83d',128,310,[K.bolt('Q','Photon Shot',0,0.5,'Energy bolt'),K.dash('W','Binary Dash',22,2.5,'High-speed dash',500),K.beam('E','Photon Beam',34,5.0,'Heavy beam',1000),K.ult('R','Binary Nova',62,11.5,'Explosive cosmic burst',1400)]),
-makeHero('antman','Ant-Man','🐜','Assassin','#cf3b39',93,335,[K.dash('Q','Shrink Dash',0,0.8,'Tiny dash'),K.aoe('W','Giant Punch',20,3,'Sudden size punch',500),K.bolt('E','Ant Swarm',27,4.5,'Swarm attack',1000),K.ult('R','Giant-Man',55,11,'Massive size burst',1400)]),
-makeHero('wasp','Wasp','🐝','Marksman','#f4d04b',90,340,[K.bolt('Q','Bio Blast',0,0.45,'Energy sting'),K.dash('W','Wing Dash',18,2.1,'Aerial dash',500),K.bind('E','Sting Barrage',25,4.7,'Multi-shot stun',1000),K.ult('R','Wasp Swarm',52,10.6,'Rapid aerial barrage',1400)]),
-makeHero('starlord','Star-Lord','🎧','Marksman','#58a0d7',100,315,[K.bolt('Q','Quad Blasters',0,0.45,'Twin blaster shots'),K.dash('W','Rocket Boots',18,2.2,'Boost dash',500),K.bolt('E','Element Gun',28,4.7,'Elemental burst',1000),K.ult('R','Legendary Barrage',54,10.8,'Massive gun combo',1400)]),
-makeHero('groot','Groot','🌳','Tank','#64a653',145,215,[K.aoe('Q','Branch Strike',0,0.85,'Heavy branch hit'),K.bind('W','Root Snare',20,2.9,'Roots enemy',500),K.heal('E','Regrow',30,5.5,'Heal over roots',1000),K.ult('R','I Am Groot',58,12,'Huge root eruption',1400)]),
-makeHero('rocket','Rocket','🦝','Marksman','#a86b43',94,330,[K.bolt('Q','Pulse Shot',0,0.45,'Energy shot'),K.bolt('W','Explosive Charge',20,2.5,'Explosive grenade',500),K.dash('E','Jetpack Dash',26,4.2,'Jet dash',1000),K.ult('R','Big Gun',55,10.5,'Huge ballistic blast',1400)]),
-makeHero('gamora','Gamora','⚔️','Assassin','#62a76b',103,325,[K.aoe('Q','Godslayer Slash',0,0.45,'Sword slash'),K.dash('W','Lethal Lunge',19,2.3,'Sword dash',500),K.bind('E','Deadly Spin',28,4.8,'Spinning strike',1000),K.ult('R','Zen-Whoberi Fury',56,10.9,'Sword combo',1400)]),
-makeHero('drax','Drax','🪓','Bruiser','#5d89a8',126,255,[K.aoe('Q','Dual Blades',0,0.75,'Twin knife hit'),K.dash('W','Cleave Rush',20,2.7,'Charging cleave',500),K.aoe('E','Destroyer Slam',30,4.9,'Massive slam',1000),K.ult('R','Destroy Everything',58,11.2,'Heavy frenzy',1400)]),
-makeHero('mantis','Mantis','🌿','Support','#8fd37d',90,275,[K.bolt('Q','Empathy Pulse',0,0.7,'Psychic pulse'),K.bind('W','Sleep Touch',20,3.2,'Sleep-like stun',500),K.heal('E','Calm Mind',28,5.5,'Self heal',1000),K.ult('R','Empathic Wave',55,11.5,'Wide psychic wave',1400)]),
-makeHero('vision','Vision','🔶','Mage','#df544a',104,285,[K.bolt('Q','Mind Beam',0,0.55,'Mind Stone beam'),K.dash('W','Phase Dash',18,2.5,'Phase through target'),K.beam('E','Solar Beam',30,4.9,'Solar beam',1000),K.ult('R','Density Shift',58,11.3,'Heavy reality strike',1400)]),
-makeHero('war_machine','War Machine','🚀','Marksman','#6f788c',115,265,[K.bolt('Q','Machine Gun',0,0.4,'Rapid rounds'),K.bolt('W','Shoulder Rockets',21,2.6,'Rocket burst',500),K.beam('E','Punisher Beam',31,4.8,'Heavy cannon',1000),K.ult('R','Saturation Fire',58,11.2,'Missile saturation',1400)]),
-makeHero('falcon','Falcon','🦅','Marksman','#ba4438',97,330,[K.bolt('Q','Wing Strike',0,0.6,'Wing projectile'),K.dash('W','Aerial Dash',19,2.3,'Fast wing dash',500),K.bolt('E','Redwing Volley',27,4.5,'Drone volley',1000),K.ult('R','Wingman Assault',54,10.7,'Aerial combo',1400)]),
-makeHero('winter_soldier','Winter Soldier','🔩','Bruiser','#7595ad',112,285,[K.bolt('Q','Arm Shot',0,0.65,'Sidearm shot'),K.dash('W','Shoulder Bash',20,2.5,'Metal-arm rush',500),K.aoe('E','Grenade Toss',28,4.4,'Explosive grenade',1000),K.ult('R','Winter Assault',56,10.8,'Rifle + melee combo',1400)]),
-makeHero('moonknight','Moon Knight','🌙','Assassin','#d9d9d9',110,315,[K.aoe('Q','Crescent Slash',0,0.5,'Crescent blades'),K.dash('W','Lunar Dash',20,2.4,'Moon dash',500),K.bind('E','Moon Snare',28,4.8,'Binding crescent field',1000),K.ult('R','Khonshu Fury',58,11.4,'Lunar barrage',1400)]),
-makeHero('msmarvel','Ms. Marvel','⭐','Bruiser','#5c8de6',102,300,[K.aoe('Q','Embiggen Punch',0,0.7,'Stretch punch'),K.dash('W','Stretch Dash',20,2.5,'Stretch dash',500),K.aoe('E','Hard-Light Smash',30,4.8,'Hard-light burst',1000),K.ult('R','Embiggen Storm',55,11,'Huge embiggen combo',1400)]),
-makeHero('shangchi','Shang-Chi','🐉','Bruiser','#d67c3a',106,325,[K.aoe('Q','Palm Strike',0,0.45,'Martial strike'),K.dash('W','Dragon Step',18,2.1,'Rapid movement'),K.bind('E','Ten Rings',28,4.8,'Ring shockwave',1000),K.ult('R','Legendary Combo',55,10.7,'Martial arts chain',1400)]),
-makeHero('shehulk','She-Hulk','💚','Tank','#7bbf45',135,255,[K.aoe('Q','Gamma Punch',0,0.7,'Heavy punch'),K.dash('W','Lawful Charge',20,2.8,'Charge attack',500),K.aoe('E','Ground Crush',30,5.0,'Massive shockwave',1000),K.ult('R','She-Hulk Smash',58,11.5,'Power smash',1400)]),
-makeHero('daredevil','Daredevil','👊','Assassin','#bd323f',100,330,[K.aoe('Q','Baton Strike',0,0.4,'Fast baton'),K.dash('W','Acrobat Leap',18,2.1,'Leaping dash',500),K.bind('E','Sonic Sense',26,4.5,'Radar stun pulse',1000),K.ult('R','Hallway Fury',52,10.5,'Close combo',1400)]),
-makeHero('punisher','Punisher','🔫','Marksman','#9aa0aa',105,295,[K.bolt('Q','Handgun',0,0.45,'Bullet'),K.bolt('W','Shotgun',20,2.2,'Wide blast',500),K.bolt('E','Grenade',27,4.2,'Explosive throw',1000),K.ult('R','War Zone',54,10.5,'Sustained barrage',1400)]),
-makeHero('ghostrider','Ghost Rider','🔥','Mage','#ff8b37',118,250,[K.bolt('Q','Hellfire',0,0.55,'Hellfire bolt'),K.dash('W','Hell Ride',20,2.8,'Flaming dash',500),K.bind('E','Chains of Hell',30,4.8,'Chain bind',1000),K.ult('R','Penance Stare',62,12,'Hellfire cinematic blast',1400)]),
-makeHero('blade','Blade','🗡️','Assassin','#ac4d5a',109,320,[K.aoe('Q','Sword Cut',0,0.45,'Fast sword'),K.dash('W','Vampire Dash',19,2.2,'Blade dash',500),K.bolt('E','Silver Shot',27,4.3,'Silver projectile',1000),K.ult('R','Daywalker Fury',56,10.9,'Sword + gun combo',1400)]),
-makeHero('magneto','Magneto','🧲','Mage','#b64de0',102,265,[K.bolt('Q','Magnet Burst',0,0.6,'Magnetic projectile'),K.bind('W','Metal Bind',22,2.8,'Pull and root',500),K.aoe('E','Iron Rain',32,5.0,'Metal shard field',1000),K.ult('R','Magnetic Cataclysm',62,12,'Massive magnetic storm',1400)]),
-makeHero('storm','Storm','🌩️','Mage','#d4e8ff',98,270,[K.bolt('Q','Wind Bolt',0,0.55,'Wind projectile'),K.dash('W','Cyclone Dash',19,2.4,'Air dash',500),K.aoe('E','Thunder Strike',30,4.8,'Lightning area',1000),K.ult('R','Omega Storm',64,12,'Full storm screen',1400)]),
-makeHero('cyclops','Cyclops','🔻','Marksman','#da4242',103,285,[K.beam('Q','Optic Beam',0,0.7,'Focused beam'),K.dash('W','Ricochet Step',18,2.3,'Dash reposition',500),K.beam('E','Wide Optic Blast',28,4.6,'Wide beam',1000),K.ult('R','Maximum Optic Force',58,11,'Huge optic blast',1400)]),
-makeHero('jeangrey','Jean Grey','✨','Mage','#e4a85e',93,255,[K.bolt('Q','Telekinetic Bolt',0,0.55,'TK shot'),K.bind('W','Phoenix Grip',20,2.8,'Telekinetic bind',500),K.aoe('E','Phoenix Burst',30,5.0,'Psychic burst',1000),K.ult('R','Phoenix Flare',65,12,'Cosmic phoenix blast',1400)]),
-makeHero('cable','Cable','🦾','Marksman','#8e9aac',120,255,[K.bolt('Q','Plasma Shot',0,0.55,'Plasma round'),K.dash('W','Cyber Dash',20,2.8,'Armored dash',500),K.bind('E','Telekinetic Lock',27,4.9,'TK lock',1000),K.ult('R','Future Arsenal',58,11.5,'Heavy weapons burst',1400)]),
-makeHero('gambit','Gambit','🃏','Assassin','#be7b4f',99,325,[K.bolt('Q','Charged Card',0,0.5,'Kinetic card'),K.dash('W','Bo Staff Rush',19,2.2,'Staff dash',500),K.aoe('E','Kinetic Bomb',28,4.5,'Charged explosion',1000),K.ult('R','Full Charge',56,10.8,'Massive kinetic combo',1400)]),
-makeHero('rogue','Rogue','🧤','Bruiser','#71a64a',111,295,[K.aoe('Q','Power Swipe',0,0.7,'Heavy swipe'),K.dash('W','Flight Rush',19,2.4,'Flying dash',500),K.heal('E','Life Drain',28,5.2,'Restore health from power',1000),K.ult('R','Absorbed Power',58,11.3,'Borrowed power burst',1400)]),
-makeHero('beast','Beast','🐾','Bruiser','#557eb5',114,325,[K.aoe('Q','Beast Claw',0,0.5,'Claw hit'),K.dash('W','Pounce',18,2.2,'Leap strike',500),K.aoe('E','Primal Roar',28,4.6,'Stun roar',1000),K.ult('R','Savage Genius',55,10.8,'Acrobatic fury',1400)]),
-makeHero('nightcrawler','Nightcrawler','😈','Assassin','#6554c5',97,345,[K.dash('Q','Bamf Dash',0,0.65,'Teleport slash'),K.dash('W','Shadow Teleport',18,2.0,'Long teleport',500),K.bind('E','Teleport Combo',26,4.4,'Multi-bamf stun',1000),K.ult('R','Bamf Storm',52,10.5,'Teleport barrage',1400)]),
-makeHero('kitty','Kitty Pryde','👻','Assassin','#73b7db',95,320,[K.dash('Q','Phase Step',0,0.65,'Phase dash'),K.bind('W','Phase Trap',20,2.8,'Trap field',500),K.dash('E','Ghost Rush',28,4.8,'Phase-through rush',1000),K.ult('R','Intangible Assault',54,10.9,'Rapid phase strikes',1400)]),
-makeHero('colossus','Colossus','🦾','Tank','#b9b9c6',142,235,[K.aoe('Q','Steel Fist',0,0.8,'Metal punch'),K.dash('W','Armored Charge',20,2.8,'Charge',500),K.aoe('E','Steel Slam',30,5.0,'Ground slam',1000),K.ult('R','Organic Steel',60,12,'Massive armored burst',1400)]),
-makeHero('apocalypse','Apocalypse','☠️','Tank','#6b84d5',165,215,[K.aoe('Q','Celestial Fist',0,0.9,'Crushing hit'),K.bind('W','Molecular Bind',22,2.9,'Energy bind',500),K.aoe('E','Energy Spear',32,5.2,'Heavy spear',1000),K.ult('R','En Sabah Nur',70,13,'Cataclysmic cosmic attack',1800)]),
-makeHero('kang','Kang','⏳','Mage','#6b8bbd',105,245,[K.bolt('Q','Chrono Bolt',0,0.55,'Time projectile'),K.dash('W','Time Step',20,2.5,'Temporal dash',500),K.bind('E','Time Lock',30,5.1,'Freeze field',1000),K.ult('R','Chrono Legion',60,12,'Temporal barrage',1400)]),
-makeHero('ultron','Ultron','🤖','Marksman','#b84e59',128,260,[K.bolt('Q','Drone Bolt',0,0.45,'Energy shot'),K.dash('W','Hover Dash',18,2.2,'Machine dash',500),K.bolt('E','Drone Swarm',28,4.7,'Drone volley',1000),K.ult('R','Age of Ultron',60,11.7,'Machine swarm blast',1400)]),
-makeHero('green_goblin','Green Goblin','🎃','Assassin','#76be48',106,310,[K.bolt('Q','Pumpkin Bomb',0,0.65,'Explosive bomb'),K.dash('W','Glider Rush',20,2.3,'Glider dash',500),K.aoe('E','Goblin Gas',28,4.8,'Gas field',1000),K.ult('R','Goblin Carnage',56,10.9,'Bombing run',1400)]),
-makeHero('kingpin','Kingpin','👑','Tank','#d8d0c5',155,210,[K.aoe('Q','Heavy Punch',0,0.9,'Brutal punch'),K.dash('W','Brawler Charge',20,2.9,'Charge',500),K.aoe('E','Kingpin Slam',30,5.0,'Ground smash',1000),K.ult('R','Crime Lord',58,11.8,'Massive boss combo',1400)]),
-makeHero('mysterio','Mysterio','🟢','Mage','#5ddbb0',92,255,[K.bolt('Q','Illusion Bolt',0,0.5,'Illusion shot'),K.bind('W','Hallucination',20,2.8,'Confusion field',500),K.dash('E','Smoke Shift',27,4.7,'Smoke teleport',1000),K.ult('R','Nightmare Realm',58,11.8,'Huge illusion storm',1400)]),
-makeHero('docock','Doctor Octopus','🦾','Bruiser','#8b7c6b',120,245,[K.aoe('Q','Tentacle Jab',0,0.6,'Tentacle hit'),K.dash('W','Tentacle Swing',20,2.5,'Swing rush',500),K.bind('E','Grab',28,4.9,'Tentacle grab',1000),K.ult('R','Four-Armed Frenzy',56,11.2,'Tentacle storm',1400)]),
-makeHero('venomlet', 'Carnage','🩸','Assassin','#c42e3b',118,315,[K.aoe('Q','Blood Slash',0,0.55,'Symbiote slash'),K.dash('W','Tendril Leap',19,2.2,'Tendril dash',500),K.bolt('E','Symbiote Spear',28,4.6,'Spear throw',1000),K.ult('R','Carnage Unleashed',60,11.5,'Full symbiote frenzy',1400)]),
-makeHero('morph','Morph','🌀','Support','#9b78d4',98,300,[K.bolt('Q','Morph Blast',0,0.55,'Energy morph shot'),K.dash('W','Copy Step',18,2.2,'Rapid dash',500),K.heal('E','Adaptive Form',26,5.2,'Adaptive heal',1000),K.ult('R','Chaos Form',55,11,'Unstable power surge',1400)])
-];
-const HERO={};heroes.forEach(h=>HERO[h.id]=h);
+const HEROES=[
+['spiderman','Spider-Man','🕷️','Assassin','#d9364e',100,330,'web',['Web Shot','Web Swing','Spider Sense','Web Cyclone']],
+['ironman','Iron Man','🤖','Marksman','#e23a42',95,295,'tech',['Repulsor','Unibeam','Micro Missiles','Orbital Laser']],
+['thor','Thor','⚡','Bruiser','#7da6ff',118,270,'storm',['Mjolnir Throw','Lightning Call','God Leap','Ragnarok Storm']],
+['captainamerica','Captain America','🛡️','Tank','#4b78df',112,285,'shield',['Shield Toss','Shield Bash','Ricochet','Avengers Charge']],
+['hulk','Hulk','💚','Tank','#59c94a',150,230,'smash',['Smash','Ground Slam','Gamma Rush','Worldbreaker']],
+['blackwidow','Black Widow','🕷','Assassin','#b63d45',96,325,'speed',['Widow Bite','Acrobat Dash','Widow Line','Red Room Barrage']],
+['hawkeye','Hawkeye','🏹','Marksman','#a5a8b3',98,315,'range',['Arrow Shot','Explosive Arrow','Cable Arrow','Trick Arrow Storm']],
+['doctorstrange','Doctor Strange','🌀','Mage','#ff9a3d',92,270,'magic',['Arcane Bolt','Crimson Bands','Portal Step','Mirror Dimension']],
+['scarletwitch','Scarlet Witch','🔴','Mage','#da4b86',88,255,'chaos',['Chaos Bolt','Hex Bind','Mind Shatter','Chaos Storm']],
+['blackpanther','Black Panther','🐾','Assassin','#9d6bff',108,325,'speed',['Claw Swipe','Shadow Dash','Kinetic Burst','Vibranium Rush']],
+['antman','Ant-Man','🐜','Assassin','#cf3b39',93,335,'size',['Shrink Dash','Giant Punch','Ant Swarm','Giant-Man']],
+['wasp','Wasp','🐝','Marksman','#f4d04b',90,340,'range',['Bio Blast','Wing Dash','Sting Barrage','Wasp Swarm']],
+['captainmarvel','Captain Marvel','⭐','Bruiser','#eaa83d',128,310,'cosmic',['Photon Shot','Binary Dash','Photon Beam','Binary Nova']],
+['warmachine','War Machine','🚀','Marksman','#6f788c',115,265,'tech',['Machine Gun','Shoulder Rockets','Punisher Beam','Saturation Fire']],
+['falcon','Falcon','🦅','Marksman','#ba4438',97,330,'range',['Wing Strike','Aerial Dash','Redwing Volley','Wingman Assault']],
+['wintersoldier','Winter Soldier','🔩','Bruiser','#7595ad',112,285,'soldier',['Arm Shot','Shoulder Bash','Grenade Toss','Winter Assault']],
+['starlord','Star-Lord','🎧','Marksman','#58a0d7',100,315,'range',['Quad Blasters','Rocket Boots','Element Gun','Legendary Barrage']],
+['groot','Groot','🌳','Tank','#64a653',145,215,'nature',['Branch Strike','Root Snare','Regrow','I Am Groot']],
+['rocket','Rocket','🦝','Marksman','#a86b43',94,330,'tech',['Pulse Shot','Explosive Charge','Jetpack Dash','Big Gun']],
+['gamora','Gamora','⚔️','Assassin','#62a76b',103,325,'blade',['Godslayer Slash','Lethal Lunge','Deadly Spin','Zen-Whoberi Fury']],
+['drax','Drax','🪓','Bruiser','#5d89a8',126,255,'smash',['Dual Blades','Cleave Rush','Destroyer Slam','Destroy Everything']],
+['mantis','Mantis','🌿','Support','#8fd37d',90,275,'mind',['Empathy Pulse','Sleep Touch','Calm Mind','Empathic Wave']],
+['vision','Vision','🔶','Mage','#df544a',104,285,'tech',['Mind Beam','Phase Dash','Solar Beam','Density Shift']],
+['loki','Loki','🪄','Mage','#4cbf7d',95,290,'illusion',['Green Bolt','Illusion Step','Mind Trick','Grand Illusion']],
+['thanos','Thanos','💜','Tank','#8c5bc4',160,225,'cosmic',['Titan Punch','Power Beam','Reality Crush','Snap']],
+['venom','Venom','🖤','Bruiser','#607070',122,305,'symbiote',['Symbiote Bite','Tendril Rush','Symbiote Spear','Carnage Mode']],
+['deadpool','Deadpool','🔴','Assassin','#cf313d',101,315,'blade',['Twin Slash','Gun Burst','Teleport Slice','Maximum Effort']],
+['wolverine','Wolverine','🐺','Bruiser','#e4c32d',112,320,'blade',['Claw Slash','Berserker Dash','Regeneration','Berserker Fury']],
+['moonknight','Moon Knight','🌙','Assassin','#d9d9d9',110,315,'blade',['Crescent Slash','Lunar Dash','Moon Snare','Khonshu Fury']],
+['daredevil','Daredevil','👊','Assassin','#bd323f',100,330,'speed',['Baton Strike','Acrobat Leap','Sonic Sense','Hallway Fury']],
+['punisher','Punisher','🔫','Marksman','#9aa0aa',105,295,'range',['Handgun','Shotgun','Grenade','War Zone']],
+['ghostrider','Ghost Rider','🔥','Mage','#ff8b37',118,250,'hell',['Hellfire','Hell Ride','Chains of Hell','Penance Stare']],
+['blade','Blade','🗡️','Assassin','#ac4d5a',109,320,'blade',['Sword Cut','Vampire Dash','Silver Shot','Daywalker Fury']],
+['msmarvel','Ms. Marvel','⭐','Bruiser','#5c8de6',102,300,'size',['Embiggen Punch','Stretch Dash','Hard-Light Smash','Embiggen Storm']],
+['shangchi','Shang-Chi','🐉','Bruiser','#d67c3a',106,325,'martial',['Palm Strike','Dragon Step','Ten Rings','Legendary Combo']],
+['shehulk','She-Hulk','💚','Tank','#7bbf45',135,255,'smash',['Gamma Punch','Lawful Charge','Ground Crush','She-Hulk Smash']],
+['magneto','Magneto','🧲','Mage','#b64de0',102,265,'metal',['Magnet Burst','Metal Bind','Iron Rain','Magnetic Cataclysm']],
+['storm','Storm','🌩️','Mage','#d4e8ff',98,270,'storm',['Wind Bolt','Cyclone Dash','Thunder Strike','Omega Storm']],
+['cyclops','Cyclops','🔻','Marksman','#da4242',103,285,'tech',['Optic Beam','Ricochet Step','Wide Optic Blast','Maximum Optic Force']],
+['jeangrey','Jean Grey','✨','Mage','#e4a85e',93,255,'phoenix',['Telekinetic Bolt','Phoenix Grip','Phoenix Burst','Phoenix Flare']],
+['cable','Cable','🦾','Marksman','#8e9aac',120,255,'tech',['Plasma Shot','Cyber Dash','Telekinetic Lock','Future Arsenal']],
+['gambit','Gambit','🃏','Assassin','#be7b4f',99,325,'kinetic',['Charged Card','Bo Staff Rush','Kinetic Bomb','Full Charge']],
+['rogue','Rogue','🧤','Bruiser','#71a64a',111,295,'smash',['Power Swipe','Flight Rush','Life Drain','Absorbed Power']],
+['beast','Beast','🐾','Bruiser','#557eb5',114,325,'speed',['Beast Claw','Pounce','Primal Roar','Savage Genius']],
+['nightcrawler','Nightcrawler','😈','Assassin','#6554c5',97,345,'teleport',['Bamf Dash','Shadow Teleport','Teleport Combo','Bamf Storm']],
+['kitty','Kitty Pryde','👻','Assassin','#73b7db',95,320,'phase',['Phase Step','Phase Trap','Ghost Rush','Intangible Assault']],
+['colossus','Colossus','🦾','Tank','#b9b9c6',142,235,'metal',['Steel Fist','Armored Charge','Steel Slam','Organic Steel']],
+['apocalypse','Apocalypse','☠️','Tank','#6b84d5',165,215,'cosmic',['Celestial Fist','Molecular Bind','Energy Spear','En Sabah Nur']],
+['ultron','Ultron','🤖','Marksman','#b84e59',128,260,'tech',['Drone Bolt','Hover Dash','Drone Swarm','Age of Ultron']],
+['greengoblin','Green Goblin','🎃','Assassin','#76be48',106,310,'range',['Pumpkin Bomb','Glider Rush','Goblin Gas','Goblin Carnage']]
+].map(x=>({id:x[0],name:x[1],emoji:x[2],cls:x[3],color:x[4],hp:x[5],spd:x[6],type:x[7],moves:x[8]}));
 
-/* ---------- RANKS / SAVE ---------- */
+const HERO=Object.fromEntries(HEROES.map(h=>[h.id,h]));
+
 const ranks=[
- {name:'Bronze',min:0,max:499,color:'#aa7b52'},
- {name:'Silver',min:500,max:999,color:'#c2ccdc'},
- {name:'Gold',min:1000,max:1499,color:'#ffd24d'},
- {name:'Platinum',min:1500,max:1999,color:'#69d8c7'},
- {name:'Diamond',min:2000,max:2499,color:'#66a8ff'},
- {name:'Master',min:2500,max:2999,color:'#c081ff'},
- {name:'Legend',min:3000,max:99999,color:'#ff6b77'}
+['Bronze',0,499],
+['Silver',500,999],
+['Gold',1000,1499],
+['Platinum',1500,1999],
+['Diamond',2000,2499],
+['Master',2500,2999],
+['Legend',3000,99999]
 ];
-function rankIndex(mmr){let i=0;for(let n=0;n<ranks.length;n++)if(mmr>=ranks[n].min)i=n;return i}
-function currentRank(){return ranks[rankIndex(save.mmr)]}
-function defaultSave(){
- let owned={spiderman:true};
- let unlocked={spiderman:[true,false,false,false]};
- return {gold:600,gems:80,mmr:120,wins:0,losses:0,owned,unlocked,selected:'spiderman'};
-}
-let save=defaultSave();
-try{const raw=localStorage.getItem(SAVE_KEY);if(raw)save=Object.assign(defaultSave(),JSON.parse(raw));}catch(e){}
-function ensureHero(id){if(!save.unlocked[id])save.unlocked[id]=[true,false,false,false]}
-function saveGame(){try{localStorage.setItem(SAVE_KEY,JSON.stringify(save))}catch(e){}}
-function toast(msg){const el=document.getElementById('toast');el.textContent=msg;el.classList.add('show');clearTimeout(window._toast);window._toast=setTimeout(()=>el.classList.remove('show'),1800)}
-function rankMMR(m){return ranks[rankIndex(m)].name}
-function renderBalances(){document.getElementById('goldVal').textContent=Math.floor(save.gold);document.getElementById('gemVal').textContent=Math.floor(save.gems);document.getElementById('rankVal').textContent=currentRank().name;document.getElementById('mmrVal').textContent=save.mmr;document.getElementById('winsVal').textContent=save.wins}
 
-/* ---------- MENU / ROSTER ---------- */
-const rosterEl=document.getElementById('roster');
-function renderRoster(){
- rosterEl.innerHTML='';
- heroes.forEach(h=>{
-  const d=document.createElement('div');d.className='heroCard'+(h.id===save.selected?' active':'');
-  d.innerHTML=`<div class="classTag">${h.cls}</div><div class="portrait">${h.emoji}</div><div class="heroName">${h.name}</div><div class="heroMeta">HP ${h.hp} · SPD ${h.spd}</div>`;
-  d.onclick=()=>{save.selected=h.id;saveGame();renderAll()};rosterEl.appendChild(d);
+const rankIndex=mmr=>{
+ let i=0;
+ ranks.forEach((r,n)=>{if(mmr>=r[1])i=n});
+ return i;
+};
+
+let save={
+ gold:1400,
+ gems:120,
+ mmr:120,
+ wins:0,
+ losses:0,
+ selected:'spiderman',
+ owned:{
+  spiderman:true,
+  ironman:true,
+  thor:true,
+  hulk:true,
+  doctorstrange:true,
+  scarletwitch:true
+ }
+};
+
+try{
+ save=Object.assign(
+  save,
+  JSON.parse(localStorage.getItem(SAVE)||'{}')
+ );
+}catch(e){}
+
+function ensure(id){
+ save.owned=save.owned||{};
+ save.skills=save.skills||{};
+ if(!save.skills[id])
+  save.skills[id]=[true,false,false,false];
+}
+
+HEROES.forEach(h=>ensure(h.id));
+
+function saveIt(){
+ try{
+  localStorage.setItem(
+   SAVE,
+   JSON.stringify(save)
+  );
+ }catch(e){}
+}
+
+function costSkill(i){
+ return [0,350,700,1400][i];
+}
+
+function heroCost(h){
+ return 300+HEROES.indexOf(h)*30;
+}
+
+function unlocked(id,i){
+ ensure(id);
+ return !!save.skills[id][i];
+}
+
+function say(t){
+ const x=document.getElementById('toast');
+ x.textContent=t;
+ x.classList.add('on');
+ clearTimeout(window._toast);
+ window._toast=setTimeout(
+  ()=>x.classList.remove('on'),
+  1800
+ );
+}
+
+
+/* =========================
+   MENU
+========================= */
+
+function desc(h,i){
+ return [
+  'Quick signature attack',
+  'Mobility / control ability',
+  'Heavy signature ability',
+  'Cinematic ultimate'
+ ][i]+' • '+h.name;
+}
+
+function render(){
+
+ document.getElementById('gold').textContent=Math.floor(save.gold);
+ document.getElementById('gems').textContent=Math.floor(save.gems);
+ document.getElementById('rank').textContent=ranks[rankIndex(save.mmr)][0];
+ document.getElementById('mmr').textContent=save.mmr;
+ document.getElementById('wins').textContent=save.wins;
+ document.getElementById('losses').textContent=save.losses;
+ document.getElementById('count').textContent=`• ${HEROES.length}`;
+
+ const roster=document.getElementById('roster');
+
+ roster.innerHTML=HEROES.map(h=>`
+  <div
+   class="hero ${h.id===save.selected?'active':''} ${save.owned[h.id]?'':'locked'}"
+   data-hero="${h.id}"
+  >
+   <div class="tag">
+    ${save.owned[h.id]?'OWNED':'G '+heroCost(h)}
+   </div>
+   <div class="emo">${h.emoji}</div>
+   <div class="hn">${h.name}</div>
+   <div class="hm">
+    ${h.cls} • HP ${h.hp} • SPD ${h.spd}
+   </div>
+  </div>
+ `).join('');
+
+ roster.querySelectorAll('[data-hero]').forEach(el=>{
+  el.onclick=()=>{
+   const id=el.dataset.hero;
+
+   if(!save.owned[id]){
+    say('Hero đang khóa — mở trong SHOP.');
+    return;
+   }
+
+   save.selected=id;
+   saveIt();
+   render();
+  };
+ });
+
+ const h=HERO[save.selected];
+
+ document.getElementById('previewName').textContent=
+  `${h.emoji} ${h.name}`;
+
+ document.getElementById('previewStats').innerHTML=`
+  <div class="stat">
+   <span class="muted">HP</span>
+   <b>${h.hp}</b>
+  </div>
+  <div class="stat">
+   <span class="muted">SPEED</span>
+   <b>${h.spd}</b>
+  </div>
+  <div class="stat">
+   <span class="muted">CLASS</span>
+   <b>${h.cls}</b>
+  </div>
+ `;
+
+ document.getElementById('previewSkills').innerHTML=
+  h.moves.map((n,i)=>`
+   <div class="skillCard ${unlocked(h.id,i)?'':'lock'}">
+    <div class="st">
+     <b>${'QWER'[i]} · ${n}</b>
+     <span>CD ${[.6,2.6,4.8,11][i]}s</span>
+    </div>
+    <div class="sd">${desc(h,i)}</div>
+    <div class="sc">
+     ${
+      unlocked(h.id,i)
+      ? '✓ UNLOCKED'
+      : i===1
+      ? '350 Gold'
+      : i===2
+      ? '700 Gold + 30 Gems'
+      : '1400 Gold + Platinum+'
+     }
+    </div>
+   </div>
+  `).join('');
+
+ document.getElementById('skillHero').textContent=h.name;
+
+ document.getElementById('skillTree').innerHTML=
+  h.moves.map((n,i)=>{
+
+   const u=unlocked(h.id,i);
+
+   const can=
+    i===0||
+    (
+     save.gold>=costSkill(i)&&
+     (i!==2||save.gems>=30)&&
+     (i!==3||save.mmr>=1500)
+    );
+
+   return `
+    <div class="skillCard ${u?'':'lock'}">
+
+     <div class="st">
+      <b>${'QWER'[i]} · ${n}</b>
+      <span>CD ${[.6,2.6,4.8,11][i]}s</span>
+     </div>
+
+     <div class="sd">
+      ${desc(h,i)}
+     </div>
+
+     <div class="sc">
+      ${
+       u
+       ? '✓ UNLOCKED'
+       : i===1
+       ? '350 Gold'
+       : i===2
+       ? '700 Gold + 30 Gems'
+       : '1400 Gold + Platinum+'
+      }
+     </div>
+
+     <button
+      class="skillBtn"
+      data-u="${i}"
+      ${u||!can?'disabled':''}
+     >
+      ${u?'Unlocked':'Unlock'}
+     </button>
+
+    </div>
+   `;
+  }).join('');
+
+ document.querySelectorAll('[data-u]').forEach(btn=>{
+  btn.onclick=()=>{
+
+   const i=+btn.dataset.u;
+
+   if(unlocked(h.id,i))
+    return;
+
+   if(i===1&&save.gold>=350){
+
+    save.gold-=350;
+
+   }else if(
+    i===2&&
+    save.gold>=700&&
+    save.gems>=30
+   ){
+
+    save.gold-=700;
+    save.gems-=30;
+
+   }else if(
+    i===3&&
+    save.gold>=1400&&
+    save.mmr>=1500
+   ){
+
+    save.gold-=1400;
+
+   }else{
+
+    say(
+     i===3
+      ? 'Ultimate cần Platinum+ và 1400 Gold.'
+      : 'Không đủ tài nguyên.'
+    );
+
+    return;
+   }
+
+   save.skills[h.id][i]=true;
+
+   saveIt();
+   render();
+
+   say(`${h.name}: ${n} unlocked!`);
+  };
+ });
+
+ document.getElementById('shopGrid').innerHTML=
+  HEROES.map(h=>{
+
+   const owned=!!save.owned[h.id];
+   const c=heroCost(h);
+
+   return `
+    <div class="shopItem">
+
+     <div>
+      ${h.emoji} <b>${h.name}</b>
+     </div>
+
+     <small>
+      ${h.cls}<br>
+      ${owned?'Owned':`Cost ${c} Gold`}
+     </small>
+
+     <button
+      class="buy"
+      data-buy="${h.id}"
+      ${owned||save.gold<c?'disabled':''}
+     >
+      ${owned?'OWNED':`BUY ${c} G`}
+     </button>
+
+    </div>
+   `;
+  }).join('');
+
+ document.querySelectorAll('[data-buy]').forEach(btn=>{
+  btn.onclick=()=>{
+
+   const h=HERO[btn.dataset.buy];
+   const c=heroCost(h);
+
+   if(save.gold<c)
+    return;
+
+   save.gold-=c;
+   save.owned[h.id]=true;
+
+   ensure(h.id);
+
+   saveIt();
+   render();
+
+   say(`${h.name} đã mở!`);
+  };
+ });
+
+ const r=rankIndex(save.mmr);
+
+ document.getElementById('rankRows').innerHTML=
+  ranks.map((x,i)=>`
+   <div class="rr ${i===r?'cur':''}">
+    <div>
+     <div class="rname">${x[0]}</div>
+     <div class="rpts">
+      ${x[1]}${i===ranks.length-1?'+':' - '+x[2]} MMR
+     </div>
+    </div>
+    <div class="rpts">
+     ${i===r?'CURRENT':''}
+    </div>
+   </div>
+  `).join('');
+}
+
+
+/* =========================
+   TABS
+========================= */
+
+const tabIDs={
+ heroes:'tabHeroes',
+ skills:'tabSkills',
+ shop:'tabShop',
+ rank:'tabRank'
+};
+
+document.querySelectorAll('.tab').forEach(t=>{
+
+ t.onclick=()=>{
+
+  document
+   .querySelectorAll('.tab')
+   .forEach(x=>x.classList.remove('active'));
+
+  t.classList.add('active');
+
+  Object.values(tabIDs)
+   .forEach(id=>
+    document
+     .getElementById(id)
+     .classList
+     .add('hidden')
+   );
+
+  document
+   .getElementById(tabIDs[t.dataset.tab])
+   .classList
+   .remove('hidden');
+ };
+});
+
+
+/* =========================
+   AUDIO
+========================= */
+
+let AC=null;
+
+function audio(){
+
+ if(AC)
+  return;
+
+ try{
+  AC=new(
+   window.AudioContext||
+   window.webkitAudioContext
+  )();
+ }catch(e){}
+}
+
+function beep(
+ freq=220,
+ dur=.08,
+ type='square',
+ vol=.04
+){
+
+ audio();
+
+ if(!AC)
+  return;
+
+ try{
+
+  const o=
+   AC.createOscillator();
+
+  const g=
+   AC.createGain();
+
+  o.type=type;
+
+  o.frequency.setValueAtTime(
+   freq,
+   AC.currentTime
+  );
+
+  o.frequency.exponentialRampToValueAtTime(
+   Math.max(45,freq*.4),
+   AC.currentTime+dur
+  );
+
+  g.gain.setValueAtTime(
+   vol,
+   AC.currentTime
+  );
+
+  g.gain.exponentialRampToValueAtTime(
+   .0001,
+   AC.currentTime+dur
+  );
+
+  o.connect(g).connect(AC.destination);
+
+  o.start();
+
+  o.stop(
+   AC.currentTime+dur
+  );
+
+ }catch(e){}
+}
+
+
+/* =========================
+   GAME STATE
+========================= */
+
+let phase='menu';
+
+let P=null;
+let E=null;
+
+let time=60;
+
+let matchT=0;
+
+let matchTimerID=null;
+
+let ending=false;
+
+let hudHidden=false;
+
+let hitStop=0;
+
+let shake=0;
+
+let cpuT=.5;
+
+let matchClock=0;
+
+let last=performance.now();
+
+let particles=[];
+
+let shots=[];
+
+let fx=[];
+
+let floats=[];
+
+let ko=null;
+
+const keys={};
+
+let jumpLock=false;
+
+
+/* =========================
+   FIGHTER
+========================= */
+
+function fighter(
+ h,
+ side,
+ bot
+){
+
+ return{
+
+  x:
+   side==='p'
+    ?270
+    :1010,
+
+  y:G-92,
+
+  w:58,
+
+  h:92,
+
+  vx:0,
+
+  vy:0,
+
+  dir:
+   side==='p'
+    ?1
+    :-1,
+
+  ground:true,
+
+  hp:h.hp,
+
+  mana:100,
+
+  hero:h,
+
+  side,
+
+  bot:
+   bot||
+   [true,false,false,false],
+
+  cd:[0,0,0,0],
+
+  atk:0,
+
+  stun:0,
+
+  inv:0,
+
+  combo:0,
+
+  comboT:0,
+
+  dead:false,
+
+  koT:0,
+
+  koV:0,
+
+  rot:0,
+
+  state:'idle',
+
+  shield:0
+ };
+}
+
+function face(a,b){
+ a.dir=
+  b.x>=a.x
+   ?1
+   :-1;
+}
+
+function rect(a){
+ return{
+  x:a.x-a.w/2,
+  y:a.y-a.h,
+  w:a.w,
+  h:a.h
+ };
+}
+
+function ov(a,b){
+ return(
+  a.x<b.x+b.w&&
+  a.x+a.w>b.x&&
+  a.y<b.y+b.h&&
+  a.y+a.h>b.y
+ );
+}
+
+function can(a,i){
+
+ return a.side==='p'
+  ? unlocked(a.hero.id,i)
+  : !!a.bot[i];
+}
+
+
+/* =========================
+   PARTICLES
+========================= */
+
+function part(
+ x,
+ y,
+ c,
+ n=10,
+ p=260,
+ life=.55
+){
+
+ for(let i=0;i<n;i++){
+
+  const ang=
+   rand(
+    0,
+    Math.PI*2
+   );
+
+  const sp=
+   rand(40,p);
+
+  particles.push({
+
+   x,
+
+   y,
+
+   vx:
+    Math.cos(ang)*sp,
+
+   vy:
+    Math.sin(ang)*sp,
+
+   life:
+    rand(life*.45,life),
+
+   max:life,
+
+   s:
+    pick([2,3,4]),
+
+   c
+  });
+ }
+}
+
+function textF(
+ x,
+ y,
+ t,
+ c='#fff',
+ s=17
+){
+
+ floats.push({
+  x,
+  y,
+  t,
+  c,
+  s,
+  life:.7,
+  max:.7
  });
 }
-function renderPreview(){
- const h=HERO[save.selected]||heroes[0];
- document.getElementById('previewTitle').textContent=h.name;
- document.getElementById('previewStats').innerHTML=`<div class="stat"><span class="muted">HP</span><b>${h.hp}</b></div><div class="stat"><span class="muted">SPEED</span><b>${h.spd}</b></div><div class="stat"><span class="muted">CLASS</span><b>${h.cls}</b></div>`;
- document.getElementById('previewSkills').innerHTML=h.skills.map((s,i)=>skillCardHTML(h,i)).join('');
-}
-function skillCostText(h,i){const s=h.skills[i];if(i===0)return 'UNLOCKED';if(i===1)return `G ${s.unlock}`;if(i===2)return `G ${s.unlock} + GEMS 30`;return `G ${s.unlock} + RANK ${rankNameForUlt(h)}`}
-function rankNameForUlt(){const need=rankIndex(1800);return ranks[need].name}
-function skillCardHTML(h,i){const s=h.skills[i],u=save.unlocked[h.id]?.[i]??false;return `<div class="skillCard ${u?'':'locked'}"><div class="skillHead"><b>${s.key} · ${s.name}</b><span class="muted">CD ${s.cd}s</span></div><div class="skillDesc">${s.desc}</div><div class="unlock">${u?'✓ '+(i===0?'Basic':'Unlocked'):skillCostText(h,i)}</div></div>`}
-function renderSkillTree(){
- const h=HERO[save.selected];ensureHero(h.id);const arr=save.unlocked[h.id];
- const out=arr.map((u,i)=>{const s=h.skills[i];let can=false,costGold=0,costGem=0,req=false;
-  if(i===1){costGold=s.unlock;can=save.gold>=costGold}
-  if(i===2){costGold=s.unlock;costGem=30;can=save.gold>=costGold&&save.gems>=costGem}
-  if(i===3){costGold=s.unlock;req=save.mmr>=1800;can=save.gold>=costGold&&req}
-  return `<div class="skillCard ${u?'':'locked'}"><div class="skillHead"><b>${s.key} · ${s.name}</b><span>CD ${s.cd}s</span></div><div class="skillDesc">${s.desc}</div><div class="unlock">${u?'✓ UNLOCKED':(i===3?`Cost ${costGold} G · Rank Platinum+`:`Cost ${costGold} G${costGem?' + '+costGem+' Gems':''}`)}</div><button class="skillBtn" data-unlock="${i}" ${u||!can?'disabled':''}>${u?'Unlocked':'Unlock'}</button></div>`;
- }).join('');
- document.getElementById('skillTree').innerHTML=`<div class="box" style="margin-bottom:10px"><b>${h.emoji} ${h.name}</b><div class="muted" style="font-size:10px;margin-top:4px">Skill 1 luôn có sẵn. Skill 2 dùng Gold. Skill 3 dùng Gold + Gems. Ultimate cần Platinum+.</div></div><div class="skillGrid">${out}</div>`;
- document.querySelectorAll('[data-unlock]').forEach(btn=>btn.onclick=()=>unlockSkill(h,Number(btn.dataset.unlock)));
-}
-function unlockSkill(h,i){
- ensureHero(h.id);if(save.unlocked[h.id][i])return;
- const s=h.skills[i];let ok=false;
- if(i===1&&save.gold>=s.unlock){save.gold-=s.unlock;ok=true}
- if(i===2&&save.gold>=s.unlock&&save.gems>=30){save.gold-=s.unlock;save.gems-=30;ok=true}
- if(i===3&&save.gold>=s.unlock&&save.mmr>=1800){save.gold-=s.unlock;ok=true}
- if(!ok){toast(i===3?'Cần Rank Platinum+ và đủ Gold.':'Không đủ Gold/Gems.');return}
- save.unlocked[h.id][i]=true;saveGame();renderAll();toast(`${s.name} đã mở khóa!`);
-}
-function renderRanks(){
- const ri=rankIndex(save.mmr);document.getElementById('rankRows').innerHTML=ranks.map((r,i)=>`<div class="rankRow ${i===ri?'current':''}"><div><div class="rankName" style="color:${r.color}">${r.name}</div><div class="rankPts">${r.min}${i===ranks.length-1?'+':' - '+r.max} points</div></div><div class="rankPts">${i===ri?'CURRENT':''}</div></div>`).join('');
-}
-function renderAll(){renderBalances();renderRoster();renderPreview();renderSkillTree();renderRanks();}
 
-/* ---------- TABS ---------- */
-document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));t.classList.add('active');['heroes','skills','rank'].forEach(k=>document.getElementById('tab'+k[0].toUpperCase()+k.slice(1)).classList.add('hidden'));document.getElementById('tab'+t.dataset.tab[0].toUpperCase()+t.dataset.tab.slice(1)).classList.remove('hidden')});
 
-/* ---------- WEB AUDIO SYNTH ---------- */
-let audioCtx=null;
-function audioInit(){if(audioCtx)return;try{audioCtx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}
-function beep(type='hit',pitch=220,dur=.08){audioInit();if(!audioCtx)return;const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type==='ult'?'sawtooth':'square';o.frequency.value=pitch;o.frequency.exponentialRampToValueAtTime(Math.max(60,pitch*.45),audioCtx.currentTime+dur);g.gain.setValueAtTime(.045,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.0001,audioCtx.currentTime+dur);o.connect(g).connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+dur)}
-function soundSkill(i){[250,330,440,95][i]&&beep(i===3?'ult':'hit',[260,360,500,110][i],i===3?.35:.1)}
+/* =========================
+   DAMAGE + KILL
+========================= */
 
-/* ---------- FIGHTER ENGINE ---------- */
-function fighter(hero,side){return {x:side==='p'?280:1000,y:G-92,w:58,h:92,vx:0,vy:0,dir:side==='p'?1:-1,ground:true,hp:hero.hp,mana:100,hero,side,stun:0,inv:0,atkCd:0,cd:[0,0,0,0],combo:0,comboTimer:0,flash:0,shield:0,state:'idle',dead:false}}
-let P=null,E=null;let gameRunning=false;let timeLeft=60;let gameStart=0;let particles=[],projectiles=[],effects=[],floating=[];let shake=0;let hitStop=0;let hudHidden=false;let enemyDifficulty='Easy';let cpuTimer=0;let matchCancel=false;let last=performance.now();
+function hurt(
+ t,
+ dmg,
+ stun=.1,
+ knock=100,
+ src=null,
+ instant=false
+){
 
-function face(a,b){a.dir=b.x>=a.x?1:-1}
-function R(a){return {x:a.x-a.w/2,y:a.y-a.h,w:a.w,h:a.h}}
-function hitRect(a,b){return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y}
-function addParticle(x,y,c,n=8,pow=260){for(let i=0;i<n;i++){const ang=rand(0,Math.PI*2),sp=rand(40,pow);particles.push({x,y,vx:Math.cos(ang)*sp,vy:Math.sin(ang)*sp,life:rand(.18,.6),s:pick([2,3,4]),c})}}
-function addFloat(x,y,t,c='#fff'){floating.push({x,y,t,c,life:.7})}
-function damage(t,amt,stun=.1,knock=80,src=null){if(!t||t.dead||t.inv>0)return;if(t.shield){amt*=.25;t.shield=0;addParticle(t.x,t.y-t.h*.55,'#ffe36e',18,230)};t.hp=clamp(t.hp-amt,0,t.hero.hp);t.stun=Math.max(t.stun,stun);t.vx+=knock;t.flash=.12;shake=Math.max(shake,.09);hitStop=.045;addFloat(t.x,t.y-t.h-10,'-'+Math.round(amt),src?src.hero.color:'#fff');addParticle(t.x,t.y-t.h*.55,src?src.hero.color:'#fff',8,280);beep('hit',rnd(160,280),.06);if(t.hp<=0){t.dead=true;t.state='ko';addParticle(t.x,t.y-t.h*.5,'#fff',35,420)}}
-function attack(a,b){if(a.dead||a.stun>0||a.atkCd>0)return;a.atkCd=.28;a.state='attack';const reach=84;const ar={x:a.dir>0?a.x-4:a.x-reach+4,y:a.y-a.h+30,w:reach,h:44};if(hitRect(ar,R(b))){damage(b,6,.08,a.dir*120,a);a.combo++;a.comboTimer=.85;addFloat(a.x,a.y-a.h-24,a.combo+' HIT','#ffd24d');addParticle(b.x,b.y-b.h*.5,a.hero.color,7,220)}}
-function skillUse(a,b,i){if(a.dead||a.stun>0||a.cd[i]>0)return;ensureHero(a.hero.id);if(!save.unlocked[a.hero.id][i]){if(a===P)toast('Skill chưa mở khóa trong Skill Tree.');return}const s=a.hero.skills[i];if(a.mana<s.cost){if(a===P)toast('Không đủ Mana');return}a.mana-=s.cost;a.cd[i]=s.cd;a.state='skill';soundSkill(i);face(a,b);const d=a.dir;
- if(i===0){if(s.kind==='bolt'||s.kind==='beam')spawnProjectile(a,d,620,0,8,10,a.hero.color,s.kind,.95);else closeHit(a,b,9,88,.12)}
- else if(s.kind==='dash'){a.vx=d*(i===3?900:720);a.inv=.22;addParticle(a.x,a.y-a.h*.5,a.hero.color,18,190)}
- else if(s.kind==='bolt'){if(i===2&&a.hero.name==='Iron Man'){for(let n=0;n<5;n++)setTimeout(()=>spawnProjectile(a,d*(520+80*n),rand(-180,130),7,9,a.hero.color,'missile',1.1),n*55)}else spawnProjectile(a,d,620,0,9,18+(i*5),a.hero.color,'energy',1.5)}
- else if(s.kind==='beam'){effects.push({type:'beam',owner:a,life:.38,done:false})}
- else if(s.kind==='heal'){a.hp=clamp(a.hp+Math.round(a.hero.hp*.28),0,a.hero.hp);addFloat(a.x,a.y-a.h-18,'HEAL','#66ef90');addParticle(a.x,a.y-a.h*.55,'#66ef90',20,240)}
- else if(s.kind==='bind'){effects.push({type:'bind',owner:a,life:.45,done:false})}
- else if(s.kind==='aoe'){closeHit(a,b,18+i*6,125,.25);addParticle(a.x+d*50,G-105,a.hero.color,26,320);shake=.16}
- else if(s.kind==='ult'){effects.push({type:'ult',owner:a,life:.9,done:false});shake=.35}
+ if(
+  !t||
+  t.dead||
+  (t.inv>0&&!instant)
+ )
+  return;
+
+ if(t.shield){
+
+  dmg*=.25;
+
+  t.shield=0;
+
+  part(
+   t.x,
+   t.y-t.h*.5,
+   '#ffe36c',
+   18,
+   240
+  );
+ }
+
+ t.hp=
+  clamp(
+   t.hp-dmg,
+   0,
+   t.hero.hp
+  );
+
+ t.stun=
+  Math.max(
+   t.stun,
+   stun
+  );
+
+ t.vx+=knock;
+
+ hitStop=.05;
+
+ shake=
+  Math.max(
+   shake,
+   .1
+  );
+
+ textF(
+  t.x,
+  t.y-t.h-10,
+  '-'+Math.round(dmg),
+  src
+   ?src.hero.color
+   :'#fff'
+ );
+
+ part(
+  t.x,
+  t.y-t.h*.5,
+  src
+   ?src.hero.color
+   :'#fff',
+  9,
+  300
+ );
+
+ beep(
+  rand(150,290),
+  .06
+ );
+
+ if(t.hp<=0)
+  KO(t,src);
 }
-function closeHit(a,b,amt,reach,stun=0){const ar={x:a.dir>0?a.x-5:a.x-reach+5,y:a.y-a.h+10,w:reach*1.45,h:a.h*.85};if(hitRect(ar,R(b)))damage(b,amt,stun,a.dir*220,a)}
-function spawnProjectile(a,d,vx,vy,r,dmg,c,type,life){projectiles.push({x:a.x+d*36,y:a.y-a.h*.58,vx:d*vx,vy,r,dmg,c,type,life,owner:a})}
-function updateProjectiles(dt){for(let i=projectiles.length-1;i>=0;i--){const p=projectiles[i];p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=160*dt;const t=p.owner===P?E:P;if(!t.dead&&Math.hypot(p.x-t.x,p.y-(t.y-t.h*.5))<Math.max(22,p.r+20)){damage(t,p.dmg,.1,p.vx>0?120:-120,p.owner);p.life=0;effects.push({type:'hit',x:p.x,y:p.y,life:.2,c:p.c})}if(p.life<=0||p.x<-80||p.x>W+80||p.y>G+40)projectiles.splice(i,1)}}
-function updateEffects(dt){for(let i=effects.length-1;i>=0;i--){const e=effects[i];e.life-=dt;if(e.owner&&!e.done&&e.life<.55){const a=e.owner,b=a===P?E:P;const dd=dist(a,b);let reach=e.type==='beam'?420:e.type==='ult'?320:e.type==='bind'?270:210;let dmg=e.type==='beam'?26:e.type==='ult'?34:e.type==='bind'?16:22;if(dd<reach){damage(b,dmg,.2,a.dir*260,a);addParticle(b.x,b.y-b.h*.55,a.hero.color,28,360);e.done=true;shake=Math.max(shake,.22)}}if(e.type==='hit'&&e.life>.14)addParticle(e.x,e.y,e.c,2,110);if(e.life<=0)effects.splice(i,1)}}
-function updateParticles(dt){for(let i=particles.length-1;i>=0;i--){const p=particles[i];p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=440*dt;if(p.life<=0)particles.splice(i,1)}for(let i=floating.length-1;i>=0;i--){const f=floating[i];f.life-=dt;f.y-=34*dt;if(f.life<=0)floating.splice(i,1)}}
-function updateFighter(a,o,dt){if(a.dead)return;a.stun=Math.max(0,a.stun-dt);a.inv=Math.max(0,a.inv-dt);a.atkCd=Math.max(0,a.atkCd-dt);a.flash=Math.max(0,a.flash-dt);a.comboTimer=Math.max(0,a.comboTimer-dt);if(a.comboTimer<=0)a.combo=0;a.mana=clamp(a.mana+12*dt,0,100);for(let i=0;i<4;i++)a.cd[i]=Math.max(0,a.cd[i]-dt);a.vy+=1500*dt;a.y+=a.vy*dt;if(a.y>=G-92){a.y=G-92;a.vy=0;a.ground=true}else a.ground=false;if(a.stun<=0){a.x+=a.vx*dt;a.vx*=Math.pow(.0007,dt)}a.x=clamp(a.x,65,W-65);face(a,o)}
-function playerControl(){if(!P||P.dead||P.stun>0)return;const m=(keys.d||keys.arrowright?1:0)-(keys.a||keys.arrowleft?1:0);P.vx=m*P.hero.spd;if((keys.space||keys.up)&&P.ground&&!jumpLock){P.vy=-560;jumpLock=true}if(!(keys.space||keys.up))jumpLock=false;if(keys.j){attack(P,E);keys.j=false}['q','w','e','r'].forEach((k,i)=>{if(keys[k]){skillUse(P,E,i);keys[k]=false}})}
-function cpuAI(dt){if(!E||E.dead)return;cpuTimer-=dt;if(E.stun>0)return;const d=E.x-P.x,ad=Math.abs(d),dir=Math.sign(d)||-1;if(ad>125)E.vx=-dir*E.hero.spd*(enemyDifficulty==='Nightmare'?1:.82);else E.vx=0;if(E.ground&&Math.random()<.0035)E.vy=-520;if(cpuTimer<=0){const factor={Easy:.28,Medium:.52,Hard:.74,Nightmare:.9}[enemyDifficulty]||.5;cpuTimer=rand(.22,.56)*(1-factor*.25);if(ad<105&&Math.random()<factor+.15)attack(E,P);const choices=[];ensureHero(E.hero.id);for(let i=0;i<4;i++)if(save.unlocked[E.hero.id]?.[i]&&E.mana>=E.hero.skills[i].cost&&E.cd[i]<=0)choices.push(i);if(choices.length&&Math.random()<factor)skillUse(E,P,pick(choices))}}
 
-/* ---------- DRAWING ---------- */
+
+/*
+  Quan trọng:
+  Không chuyển ngay sang Victory.
+  Nhân vật chết sẽ có animation KO trước,
+  sau đó mới hiện Result.
+*/
+
+function KO(v,a){
+
+ if(v.dead)
+  return;
+
+ v.dead=true;
+
+ v.state='ko';
+
+ v.koT=1.8;
+
+ v.koV=
+  a
+   ?a.dir*270
+   :0;
+
+ v.vy=-470;
+
+ v.rot=0;
+
+ ko={
+  victim:v,
+  attacker:a,
+  life:1.8
+ };
+
+ hitStop=.13;
+
+ shake=.5;
+
+ part(
+  v.x,
+  v.y-v.h*.5,
+  '#fff',
+  45,
+  500,
+  .95
+ );
+
+ textF(
+  (v.x+(a?a.x:v.x))/2,
+  v.y-v.h-90,
+  `K.O. — ${a?a.hero.name:'FINISH'}`,
+  '#ffe36a',
+  24
+ );
+
+ beep(
+  90,
+  .28,
+  'sawtooth',
+  .07
+ );
+}
+
+
+/* =========================
+   BASIC ATTACK
+========================= */
+
+function attack(a,b){
+
+ if(
+  a.dead||
+  a.stun>0||
+  a.atk>0
+ )
+  return;
+
+ a.atk=.28;
+
+ a.state='attack';
+
+ face(a,b);
+
+ const reach=88;
+
+ const A={
+  x:
+   a.dir>0
+    ?a.x-4
+    :a.x-reach+4,
+
+  y:a.y-a.h+30,
+
+  w:reach,
+
+  h:44
+ };
+
+ if(
+  ov(
+   A,
+   rect(b)
+  )
+ ){
+
+  a.combo++;
+
+  a.comboT=.85;
+
+  textF(
+   a.x,
+   a.y-a.h-25,
+   a.combo+' HIT',
+   '#ffd34d'
+  );
+
+  hurt(
+   b,
+   6,
+   .09,
+   a.dir*120,
+   a
+  );
+
+  part(
+   b.x,
+   b.y-b.h*.5,
+   a.hero.color,
+   8,
+   220,
+   .4
+  );
+ }
+}
+
+
+/* =========================
+   PROJECTILES
+========================= */
+
+function shoot(
+ a,
+ speed,
+ vy,
+ r,
+ dmg,
+ c,
+ life=1.4,
+ n=1
+){
+
+ for(let i=0;i<n;i++){
+
+  const spread=
+   n===1
+    ?0
+    :rand(-130,130);
+
+  shots.push({
+
+   x:a.x+a.dir*38,
+
+   y:a.y-a.h*.58,
+
+   vx:a.dir*speed,
+
+   vy:vy+spread,
+
+   r,
+
+   dmg,
+
+   c,
+
+   life,
+
+   owner:a,
+
+   rot:rand(0,6)
+  });
+ }
+}
+
+
+/* =========================
+   SKILLS
+========================= */
+
+function use(a,b,i){
+
+ if(
+  a.dead||
+  a.stun>0||
+  a.cd[i]>0||
+  !can(a,i)
+ )
+  return;
+
+ if(
+  a.side==='p' &&
+  !can(a,i)
+ ){
+
+  say(
+   'Skill chưa mở.'
+  );
+
+  return;
+ }
+
+ const cost=
+  [0,20,30,55][i];
+
+ if(a.mana<cost){
+
+  if(a.side==='p')
+   say('Không đủ Mana');
+
+  return;
+ }
+
+ a.mana-=cost;
+
+ a.cd[i]=
+  [.6,2.6,4.8,11][i];
+
+ a.state='skill';
+
+ face(a,b);
+
+ beep(
+  [280,400,520,100][i],
+  [0.08,0.12,0.15,0.35][i],
+  i===3?'sawtooth':'square',
+  i===3?.07:.045
+ );
+
+ const type=a.hero.type;
+
+ const d=a.dir;
+
+
+/*
+ Q
+*/
+
+ if(i===0){
+
+  if([
+   'range',
+   'tech',
+   'magic',
+   'chaos',
+   'cosmic',
+   'storm',
+   'hell',
+   'mind',
+   'kinetic'
+  ].includes(type)){
+
+   shoot(
+    a,
+    660,
+    0,
+    8,
+    10,
+    a.hero.color,
+    1.1
+   );
+
+  }
+  else if(
+   type==='teleport'||
+   type==='phase'
+  ){
+
+   a.vx=d*700;
+
+   a.inv=.25;
+
+   setTimeout(
+    ()=>{
+     if(phase==='battle')
+      hitClose(a,b,12,105)
+    },
+    70
+   );
+
+  }
+  else{
+
+   hitClose(
+    a,
+    b,
+    10,
+    95
+   );
+  }
+ }
+
+
+/*
+ W
+*/
+
+ else if(i===1){
+
+  if([
+   'range',
+   'tech',
+   'magic',
+   'chaos',
+   'cosmic',
+   'storm',
+   'hell'
+  ].includes(type)){
+
+   shoot(
+    a,
+    600,
+    0,
+    9,
+    17,
+    a.hero.color,
+    1.5,
+    type==='tech'?3:1
+   );
+
+  }
+
+  else if(type==='shield'){
+
+   a.shield=.85;
+
+   part(
+    a.x,
+    a.y-a.h*.5,
+    '#75bbff',
+    22,
+    250,
+    .65
+   );
+
+  }
+
+  else if(
+   type==='mind'||
+   type==='metal'
+  ){
+
+   fx.push({
+    t:'bind',
+    a,
+    life:.55,
+    done:false
+   });
+
+  }
+
+  else{
+
+   a.vx=d*790;
+
+   a.inv=.25;
+
+   part(
+    a.x,
+    a.y-a.h*.5,
+    a.hero.color,
+    20,
+    220,
+    .55
+   );
+
+   setTimeout(
+    ()=>{
+     if(phase==='battle')
+      hitClose(
+       a,
+       b,
+       17,
+       115
+      )
+    },
+    80
+   );
+  }
+ }
+
+
+/*
+ E
+*/
+
+ else if(i===2){
+
+  if(
+   type==='range'||
+   type==='tech'
+  ){
+
+   shoot(
+    a,
+    620,
+    rand(-50,50),
+    8,
+    24,
+    a.hero.color,
+    1.5,
+    3
+   );
+
+  }
+
+  else if(
+   type==='nature'
+  ){
+
+   a.hp=
+    clamp(
+     a.hp+35,
+     0,
+     a.hero.hp
+    );
+
+   textF(
+    a.x,
+    a.y-a.h-18,
+    'REGEN',
+    '#6dff96'
+   );
+
+   part(
+    a.x,
+    a.y-a.h*.5,
+    '#6dff96',
+    23,
+    240,
+    .7
+   );
+
+  }
+
+  else if(type==='shield'){
+
+   fx.push({
+    t:'bind',
+    a,
+    life:.55,
+    done:false
+   });
+
+  }
+
+  else{
+
+   hitClose(
+    a,
+    b,
+    25,
+    145
+   );
+
+   fx.push({
+    t:'shock',
+    a,
+    life:.5
+   });
+
+   shake=.2;
+
+   part(
+    a.x+d*60,
+    G-95,
+    a.hero.color,
+    30,
+    360,
+    .7
+   );
+  }
+ }
+
+
+/*
+ ULT
+*/
+
+ else{
+
+  fx.push({
+   t:'ult',
+   a,
+   life:1.15,
+   done:false
+  });
+
+  shake=.55;
+
+  hitStop=.1;
+
+  textF(
+   a.x,
+   a.y-a.h-30,
+   a.hero.moves[3].toUpperCase(),
+   a.hero.color,
+   20
+  );
+ }
+}
+
+function hitClose(
+ a,
+ b,
+ dmg,
+ reach
+){
+
+ const A={
+  x:
+   a.dir>0
+    ?a.x-4
+    :a.x-reach+4,
+
+  y:a.y-a.h+8,
+
+  w:reach*1.4,
+
+  h:a.h*.85
+ };
+
+ if(
+  ov(
+   A,
+   rect(b)
+  )
+ ){
+
+  hurt(
+   b,
+   dmg,
+   .2,
+   a.dir*240,
+   a
+  );
+ }
+}
+
+
+/* =========================
+   PROJECTILES UPDATE
+========================= */
+
+function updShots(dt){
+
+ for(
+  let i=shots.length-1;
+  i>=0;
+  i--
+ ){
+
+  const p=shots[i];
+
+  p.life-=dt;
+
+  p.x+=p.vx*dt;
+
+  p.y+=p.vy*dt;
+
+  p.vy+=130*dt;
+
+  p.rot+=dt*10;
+
+  const t=
+   p.owner===P
+    ?E
+    :P;
+
+  if(
+   !t.dead &&
+   Math.hypot(
+    p.x-t.x,
+    p.y-(t.y-t.h*.55)
+   )<
+    p.r+23
+  ){
+
+   hurt(
+    t,
+    p.dmg,
+    .1,
+    p.vx>0?140:-140,
+    p.owner
+   );
+
+   p.life=0;
+
+   fx.push({
+    t:'hit',
+    x:p.x,
+    y:p.y,
+    life:.25,
+    c:p.c
+   });
+  }
+
+  if(
+   p.life<=0||
+   p.x<-100||
+   p.x>W+100||
+   p.y>G+50
+  ){
+
+   shots.splice(
+    i,
+    1
+   );
+  }
+ }
+}
+
+
+/* =========================
+   ULT RANGE / DAMAGE
+========================= */
+
+function ultReach(id){
+
+ if([
+  'thor',
+  'storm',
+  'scarletwitch',
+  'doctorstrange',
+  'jeangrey',
+  'magneto',
+  'loki',
+  'thanos',
+  'apocalypse',
+  'captainmarvel'
+ ].includes(id))
+  return 450;
+
+ if([
+  'ironman',
+  'warmachine',
+  'vision',
+  'cyclops'
+ ].includes(id))
+  return 520;
+
+ return 300;
+}
+
+function ultDmg(id){
+
+ if([
+  'thanos',
+  'hulk',
+  'apocalypse'
+ ].includes(id))
+  return 46;
+
+ if([
+  'thor',
+  'storm',
+  'scarletwitch',
+  'jeangrey'
+ ].includes(id))
+  return 42;
+
+ if([
+  'ironman',
+  'captainmarvel',
+  'cyclops'
+ ].includes(id))
+  return 40;
+
+ return 36;
+}
+
+
+/* =========================
+   EFFECTS
+========================= */
+
+function updFx(dt){
+
+ for(
+  let i=fx.length-1;
+  i>=0;
+  i--
+ ){
+
+  const e=fx[i];
+
+  e.life-=dt;
+
+  if(
+   e.t==='ult'&&
+   !e.done&&
+   e.life<.62
+  ){
+
+   const b=
+    e.a===P
+     ?E
+     :P;
+
+   if(
+    Math.abs(
+     e.a.x-b.x
+    )<
+    ultReach(
+     e.a.hero.id
+    )
+   ){
+
+    hurt(
+     b,
+     ultDmg(
+      e.a.hero.id
+     ),
+     .35,
+     e.a.dir*330,
+     e.a
+    );
+   }
+
+   e.done=true;
+
+   shake=.55;
+  }
+
+  if(
+   e.t==='bind'&&
+   !e.done&&
+   e.life<.32
+  ){
+
+   const b=
+    e.a===P
+     ?E
+     :P;
+
+   if(
+    Math.abs(
+     e.a.x-b.x
+    )<280
+   ){
+
+    hurt(
+     b,
+     19,
+     .45,
+     e.a.dir*100,
+     e.a
+    );
+   }
+
+   e.done=true;
+  }
+
+  if(
+   e.life<=0
+  )
+   fx.splice(
+    i,
+    1
+   );
+ }
+}
+
+
+/* =========================
+   PARTICLE UPDATE
+========================= */
+
+function updParts(dt){
+
+ for(
+  let i=particles.length-1;
+  i>=0;
+  i--
+ ){
+
+  const p=particles[i];
+
+  p.life-=dt;
+
+  p.x+=p.vx*dt;
+
+  p.y+=p.vy*dt;
+
+  p.vy+=450*dt;
+
+  if(
+   p.life<=0
+  )
+   particles.splice(
+    i,
+    1
+   );
+ }
+
+ for(
+  let i=floats.length-1;
+  i>=0;
+  i--
+ ){
+
+  const f=floats[i];
+
+  f.life-=dt;
+
+  f.y-=30*dt;
+
+  if(
+   f.life<=0
+  )
+   floats.splice(
+    i,
+    1
+   );
+ }
+
+ if(ko){
+
+  ko.life-=dt;
+
+  if(
+   ko.life<=0
+  )
+   ko=null;
+ }
+}
+
+
+/* =========================
+   FIGHTER UPDATE
+========================= */
+
+function updF(a,o,dt){
+
+ if(a.dead){
+
+  a.koT-=dt;
+
+  a.x+=a.koV*dt;
+
+  a.koV*=Math.pow(.0005,dt);
+
+  a.vy+=1200*dt;
+
+  a.y+=a.vy*dt;
+
+  a.rot+=dt*2.5;
+
+  if(
+   a.y>G-92
+  ){
+
+   a.y=G-92;
+
+   a.vy=0;
+  }
+
+  return;
+ }
+
+ a.stun=
+  Math.max(
+   0,
+   a.stun-dt
+  );
+
+ a.inv=
+  Math.max(
+   0,
+   a.inv-dt
+  );
+
+ a.atk=
+  Math.max(
+   0,
+   a.atk-dt
+  );
+
+ a.mana=
+  clamp(
+   a.mana+13*dt,
+   0,
+   100
+  );
+
+ a.comboT=
+  Math.max(
+   0,
+   a.comboT-dt
+  );
+
+ if(a.comboT<=0)
+  a.combo=0;
+
+ for(let i=0;i<4;i++){
+
+  a.cd[i]=
+   Math.max(
+    0,
+    a.cd[i]-dt
+   );
+ }
+
+ a.vy+=1500*dt;
+
+ a.y+=a.vy*dt;
+
+ if(
+  a.y>=G-92
+ ){
+
+  a.y=G-92;
+
+  a.vy=0;
+
+  a.ground=true;
+
+ }else{
+
+  a.ground=false;
+ }
+
+ if(a.stun<=0){
+
+  a.x+=a.vx*dt;
+
+  a.vx*=
+   Math.pow(
+    .0007,
+    dt
+   );
+ }
+
+ a.x=
+  clamp(
+   a.x,
+   65,
+   W-65
+  );
+
+ face(a,o);
+}
+
+
+/* =========================
+   PLAYER
+========================= */
+
+function player(){
+
+ if(
+  !P||
+  P.dead||
+  P.stun>0
+ )
+  return;
+
+ const move=
+  (keys.d||keys.arrowright?1:0)-
+  (keys.a||keys.arrowleft?1:0);
+
+ P.vx=
+  move*
+  P.hero.spd;
+
+ if(
+  (keys.space||keys.arrowup)&&
+  P.ground&&
+  !jumpLock
+ ){
+
+  P.vy=-570;
+
+  jumpLock=true;
+ }
+
+ if(
+  !(keys.space||keys.arrowup)
+ )
+  jumpLock=false;
+
+ if(keys.j){
+
+  attack(P,E);
+
+  keys.j=false;
+ }
+
+ [
+  ['q',0],
+  ['w',1],
+  ['e',2],
+  ['r',3]
+ ].forEach(
+  ([k,i])=>{
+
+   if(keys[k]){
+
+    use(
+     P,
+     E,
+     i
+    );
+
+    keys[k]=false;
+   }
+  }
+);
+
+
+/* =========================
+   CPU
+========================= */
+
+function ai(dt){
+
+ if(
+  !E||
+  E.dead||
+  P.dead
+ )
+  return;
+
+ cpuT-=dt;
+
+ if(
+  E.stun>0
+ )
+  return;
+
+ const dx=P.x-E.x;
+
+ const ad=Math.abs(dx);
+
+ const d=
+  Math.sign(dx)||-1;
+
+ const f={
+  Easy:.42,
+  Medium:.62,
+  Hard:.80,
+  Nightmare:.94
+ }[difficulty];
+
+ if(ad>125)
+
+  E.vx=
+   d*
+   E.hero.spd*
+   .78;
+
+ else
+
+  E.vx=0;
+
+ if(
+  E.ground&&
+  ad>180&&
+  Math.random()<.003
+ ){
+
+  E.vy=-540;
+ }
+
+ if(cpuT>0)
+  return;
+
+ cpuT=
+  rand(
+   .18,
+   .46
+  )*
+  (1-f*.18);
+
+ if(
+  ad<105&&
+  Math.random()<f+.08
+ ){
+
+  attack(E,P);
+
+  return;
+ }
+
+ let choices=[];
+
+ for(
+  let i=0;
+  i<4;
+  i++
+ ){
+
+  if(
+   can(E,i)&&
+   E.mana>=[0,20,30,55][i]&&
+   E.cd[i]<=0
+  )
+   choices.push(i);
+ }
+
+ if(
+  choices.length&&
+  Math.random()<f
+ ){
+
+  let i=pick(choices);
+
+  if(
+   i===3&&
+   ad>ultReach(E.hero.id)&&
+   choices.length>1
+  ){
+
+   const nonUlt=
+    choices.filter(
+     x=>x!==3
+    );
+
+   if(nonUlt.length)
+    i=pick(nonUlt);
+  }
+
+  use(
+   E,
+   P,
+   i
+  );
+ }
+}
+
+
+/* =========================
+   BACKGROUND
+========================= */
+
 function bg(){
- ctx.fillStyle='#11182b';ctx.fillRect(0,0,W,H);
- const sky=ctx.createLinearGradient(0,0,0,G-90);sky.addColorStop(0,'#090e1d');sky.addColorStop(1,'#1d2442');ctx.fillStyle=sky;ctx.fillRect(0,0,W,G-90);
- for(let i=0;i<65;i++){ctx.fillStyle=i%3?'#ffffff66':'#9dd1ff66';ctx.fillRect((i*137)%W,30+(i*43)%360,2,2)}
- for(let x=-(gameStart*.03%120)-120;x<W+120;x+=120){const h=120+((x*17)%180+180)%180;ctx.fillStyle='#182039';ctx.fillRect(x,G-90-h,88,h);ctx.fillStyle='#ffc96633';for(let yy=G-105-h;yy<G-110;yy+=24)for(let xx=x+10;xx<x+80;xx+=20)ctx.fillRect(xx,yy,7,7)}
- ctx.fillStyle='#080b13';ctx.fillRect(0,G-90,W,90);for(let x=-(gameStart*.18%120)-120;x<W+120;x+=120){ctx.fillStyle='#343d58';ctx.fillRect(x,G-45,65,4)}ctx.fillStyle='#d8346a';ctx.fillRect(0,G-91,W,3)
+
+ let sky=
+  ctx.createLinearGradient(
+   0,
+   0,
+   0,
+   G-90
+  );
+
+ sky.addColorStop(
+  0,
+  '#080e20'
+ );
+
+ sky.addColorStop(
+  .55,
+  '#141e38'
+ );
+
+ sky.addColorStop(
+  1,
+  '#27294a'
+ );
+
+ ctx.fillStyle=sky;
+
+ ctx.fillRect(
+  0,
+  0,
+  W,
+  H
+ );
+
+ for(
+  let i=0;
+  i<80;
+  i++
+ ){
+
+  ctx.fillStyle=
+   i%3
+    ?'#fff8'
+    :'#9fd5ff99';
+
+  ctx.fillRect(
+   (i*149)%W,
+   25+(i*47)%360,
+   2,
+   2
+  );
+ }
+
+ ctx.fillStyle='#171f38';
+
+ for(
+  let x=-50;
+  x<W+50;
+  x+=105
+ ){
+
+  const h=
+   130+
+   ((x*17)%190+190)%190;
+
+  ctx.fillRect(
+   x,
+   G-90-h,
+   75,
+   h
+  );
+
+  ctx.fillStyle='#ffc96635';
+
+  for(
+   let y=G-108-h;
+   y<G-108;
+   y+=24
+  ){
+
+   for(
+    let xx=x+10;
+    xx<x+66;
+    xx+=18
+   ){
+
+    ctx.fillRect(
+     xx,
+     y,
+     7,
+     7
+    );
+   }
+  }
+
+  ctx.fillStyle='#171f38';
+ }
+
+ ctx.fillStyle='#070a11';
+
+ ctx.fillRect(
+  0,
+  G-90,
+  W,
+  90
+ );
+
+ const off=
+  (matchClock*170)%124;
+
+ for(
+  let x=-124-off;
+  x<W+124;
+  x+=124
+ ){
+
+  ctx.fillStyle='#343d58';
+
+  ctx.fillRect(
+   x,
+   G-46,
+   65,
+   4
+  );
+ }
+
+ ctx.fillStyle='#c92f60';
+
+ ctx.fillRect(
+  0,
+  G-92,
+  W,
+  3
+ );
 }
+
+
+/* =========================
+   PIXEL HERO
+========================= */
+
 function drawHero(a){
- const x=Math.round(a.x),y=Math.round(a.y),c=a.hero.color;ctx.save();ctx.translate(x,y);if(a.flash>0&&Math.floor(a.flash*90)%2===0)ctx.globalAlpha=.45;
- const run=Math.sin(performance.now()*.018+(a===E?1:0))*4;
- ctx.fillStyle='#0008';ctx.fillRect(-26,2,52,8);
- // body/head
- ctx.fillStyle=c;ctx.fillRect(-20,-64,40,52);ctx.fillRect(-24,-50,48,14);
- ctx.fillStyle='#f0c59f';ctx.fillRect(-15,-87,30,22);ctx.fillStyle='#182036';ctx.fillRect(-13,-82,26,6);
- ctx.fillStyle=c;ctx.fillRect(-26,-57,9,27);ctx.fillRect(17,-57,9,27);
- ctx.fillStyle='#11131d';ctx.fillRect(-16,-12,13,25+run);ctx.fillRect(3,-12,13,25-run);
- // icon/visor
- ctx.fillStyle='#fff';ctx.fillRect(-6,-66,12,3);
- if(a.hero.id==='spiderman'){ctx.fillRect(-10,-80,7,4);ctx.fillRect(3,-80,7,4)}
- if(a.hero.id==='ironman'||a.hero.id==='vision'){ctx.fillStyle='#ffe45d';ctx.fillRect(-6,-48,12,10)}
- if(a.hero.id==='thor'){ctx.fillStyle='#c8d3ea';ctx.fillRect(25,-62,8,26);ctx.fillRect(27,-69,17,7)}
- if(a.hero.id==='captainamerica'){ctx.fillStyle='#fff';ctx.fillRect(-33,-58,10,28);ctx.fillStyle='#e33';ctx.fillRect(-34,-60,12,4)}
- if(a.hero.id==='thanos'||a.hero.id==='hulk'||a.hero.id==='groot'){ctx.fillStyle='#314a2e';ctx.fillRect(-22,-64,44,8)}
- if(a.hero.id==='wolverine'||a.hero.id==='blackpanther'){ctx.fillStyle='#fff';ctx.fillRect(-18,-95,36,7)}
- if(a.shield){ctx.strokeStyle='#6eb4ff';ctx.lineWidth=4;ctx.beginPath();ctx.arc(0,-43,52,0,Math.PI*2);ctx.stroke()}
- // weapon hint
- if(a.hero.cls==='Marksman'){ctx.fillStyle='#eee';ctx.fillRect(a.dir*24,-48,a.dir*18,5)}
+
+ ctx.save();
+
+ ctx.translate(
+  Math.round(a.x),
+  Math.round(a.y)
+ );
+
+ if(a.dead)
+  ctx.rotate(a.rot);
+
+ const c=
+  a.hero.color;
+
+ const run=
+  Math.sin(
+   performance.now()*.02+
+   (a===E?1:0)
+  )*4;
+
+ ctx.fillStyle='#0009';
+
+ ctx.fillRect(
+  -27,
+  2,
+  54,
+  8
+ );
+
+ ctx.fillStyle=c;
+
+ ctx.fillRect(
+  -20,
+  -64,
+  40,
+  52
+ );
+
+ ctx.fillRect(
+  -25,
+  -50,
+  50,
+  15
+ );
+
+ ctx.fillStyle='#efc5a0';
+
+ ctx.fillRect(
+  -15,
+  -88,
+  30,
+  23
+ );
+
+ ctx.fillStyle='#151a2a';
+
+ ctx.fillRect(
+  -14,
+  -82,
+  28,
+  7
+ );
+
+ ctx.fillStyle=c;
+
+ ctx.fillRect(
+  -27,
+  -58,
+  10,
+  28
+ );
+
+ ctx.fillRect(
+  17,
+  -58,
+  10,
+  28
+ );
+
+ ctx.fillStyle='#11131d';
+
+ ctx.fillRect(
+  -16,
+  -13,
+  13,
+  26+run
+ );
+
+ ctx.fillRect(
+  3,
+  -13,
+  13,
+  26-run
+ );
+
+ ctx.fillStyle='#fff';
+
+ ctx.fillRect(
+  -6,
+  -66,
+  12,
+  3
+ );
+
+ const id=
+  a.hero.id;
+
+
+/* Spider-Man */
+
+ if(id==='spiderman'){
+
+  ctx.fillStyle='#fff';
+
+  ctx.fillRect(
+   -10,
+   -80,
+   7,
+   4
+  );
+
+  ctx.fillRect(
+   3,
+   -80,
+   7,
+   4
+  );
+ }
+
+
+/* Iron Man / Vision */
+
+ if([
+  'ironman',
+  'vision'
+ ].includes(id)){
+
+  ctx.fillStyle='#ffe45b';
+
+  ctx.fillRect(
+   -6,
+   -49,
+   12,
+   10
+  );
+ }
+
+
+/* Thor */
+
+ if(id==='thor'){
+
+  ctx.fillStyle='#d5ddeb';
+
+  ctx.fillRect(
+   26,
+   -62,
+   8,
+   27
+  );
+
+  ctx.fillRect(
+   27,
+   -70,
+   17,
+   7
+  );
+ }
+
+
+/* Captain */
+
+ if(id==='captainamerica'){
+
+  ctx.fillStyle='#fff';
+
+  ctx.fillRect(
+   -34,
+   -59,
+   11,
+   29
+  );
+
+  ctx.fillStyle='#df3949';
+
+  ctx.fillRect(
+   -35,
+   -61,
+   13,
+   4
+  );
+ }
+
+
+/* Hulk / She-Hulk / Groot */
+
+ if([
+  'hulk',
+  'shehulk',
+  'groot'
+ ].includes(id)){
+
+  ctx.fillStyle='#31542f';
+
+  ctx.fillRect(
+   -23,
+   -65,
+   46,
+   8
+  );
+ }
+
+
+/* Wolverine / Panther / Deadpool */
+
+ if([
+  'wolverine',
+  'blackpanther',
+  'deadpool'
+ ].includes(id)){
+
+  ctx.fillStyle='#fff';
+
+  ctx.fillRect(
+   -18,
+   -95,
+   36,
+   7
+  );
+ }
+
+
+/* Ghost Rider */
+
+ if(id==='ghostrider'){
+
+  ctx.fillStyle='#ff8b37';
+
+  ctx.fillRect(
+   -13,
+   -99,
+   26,
+   12
+  );
+
+  ctx.fillRect(
+   -18,
+   -96,
+   8,
+   17
+  );
+
+  ctx.fillRect(
+   10,
+   -96,
+   8,
+   17
+  );
+ }
+
+
+/* Weapons */
+
+ if([
+  'hawkeye',
+  'gambit',
+  'moonknight'
+ ].includes(id)){
+
+  ctx.fillStyle='#eee';
+
+  ctx.fillRect(
+   a.dir*24,
+   -54,
+   a.dir*22,
+   4
+  );
+ }
+
+
+/* Shield */
+
+ if(a.shield){
+
+  ctx.strokeStyle='#70b9ff';
+
+  ctx.lineWidth=4;
+
+  ctx.beginPath();
+
+  ctx.arc(
+   0,
+   -43,
+   51,
+   0,
+   Math.PI*2
+  );
+
+  ctx.stroke();
+ }
+
+
+/* Attack animation */
+
+ if(
+  a.state==='attack'||
+  a.state==='skill'
+ ){
+
+  ctx.fillStyle=c;
+
+  ctx.fillRect(
+   a.dir*28,
+   -57,
+   a.dir*25,
+   7
+  );
+ }
+
+
+/* KO slash */
+
+ if(a.dead){
+
+  ctx.fillStyle='#fff';
+
+  ctx.fillRect(
+   -30,
+   -100,
+   60,
+   4
+  );
+ }
+
  ctx.restore();
 }
-function drawProjectiles(){for(const p of projectiles){ctx.fillStyle=p.c;ctx.fillRect(Math.round(p.x-p.r),Math.round(p.y-p.r),p.r*2,p.r*2);ctx.fillStyle='#fff';ctx.fillRect(Math.round(p.x-2),Math.round(p.y-2),4,4)}}
-function drawEffects(){for(const e of effects){ctx.globalAlpha=clamp(e.life/.8,0,1);if(e.type==='beam'){const a=e.owner;ctx.fillStyle=a.hero.color;ctx.fillRect(a.x,a.y-a.h*.6,a.dir*430,14);ctx.fillStyle='#fff';ctx.fillRect(a.x,a.y-a.h*.6,a.dir*355,4)}else if(e.type==='bind'){const a=e.owner;ctx.strokeStyle=a.hero.color;ctx.lineWidth=6;ctx.beginPath();ctx.arc(a.x+a.dir*110,a.y-a.h*.55,70,0,Math.PI*2);ctx.stroke()}else if(e.type==='ult'){const a=e.owner;ctx.strokeStyle=a.hero.color;ctx.lineWidth=12;ctx.beginPath();ctx.arc(a.x,a.y-48,120+Math.sin(e.life*20)*15,0,Math.PI*2);ctx.stroke();ctx.fillStyle=a.hero.color;for(let n=0;n<9;n++)ctx.fillRect(a.x+Math.cos(n)*rand(100,240),G-90-rand(100,380),rand(3,8),rand(20,70))}else if(e.type==='hit'){ctx.fillStyle=e.c;ctx.fillRect(e.x-10,e.y-10,20,20)}ctx.globalAlpha=1}}
-function drawParticles(){for(const p of particles){ctx.globalAlpha=clamp(p.life/.6,0,1);ctx.fillStyle=p.c;ctx.fillRect(Math.round(p.x),Math.round(p.y),p.s,p.s)}ctx.globalAlpha=1;for(const f of floating){ctx.globalAlpha=clamp(f.life/.7,0,1);ctx.fillStyle=f.c;ctx.font='900 18px monospace';ctx.textAlign='center';ctx.fillText(f.t,Math.round(f.x),Math.round(f.y))}ctx.globalAlpha=1;ctx.textAlign='left'}
-function render(){let sx=0,sy=0;if(shake>0){shake=Math.max(0,shake-.016);sx=rand(-7,7);sy=rand(-4,4)}ctx.save();ctx.translate(sx,sy);bg();if(P&&E){drawProjectiles();drawEffects();drawHero(P);drawHero(E);drawParticles()}ctx.restore();requestAnimationFrame(render)}
 
-/* ---------- HUD ---------- */
-function updateHUD(){if(!P||!E)return;document.getElementById('pName').textContent=`${P.hero.emoji} ${P.hero.name}`;document.getElementById('eName').textContent=`${E.hero.emoji} ${E.hero.name} [${enemyDifficulty}]`;document.getElementById('pHp').style.width=(P.hp/P.hero.hp*100)+'%';document.getElementById('eHp').style.width=(E.hp/E.hero.hp*100)+'%';document.getElementById('pMana').style.width=P.mana+'%';document.getElementById('eMana').style.width=E.mana+'%';document.getElementById('roundTime').textContent=Math.max(0,Math.ceil(timeLeft));const combo=document.getElementById('comboUI');combo.textContent=P.combo+' HIT COMBO';combo.classList.toggle('show',P.combo>1);const bar=document.getElementById('skillBar');if(bar.childElementCount!==4){bar.innerHTML=P.hero.skills.map((s,i)=>`<button class="slot" data-skill="${i}"><small>${s.cost?'M'+s.cost:'BASIC'}</small><b>${s.key}</b><span>${s.name}</span><div class="cool"></div></button>`).join('');bar.querySelectorAll('[data-skill]').forEach(x=>x.onclick=()=>skillUse(P,E,Number(x.dataset.skill)))}bar.querySelectorAll('.slot').forEach((x,i)=>{const unlocked=save.unlocked[P.hero.id]?.[i];x.classList.toggle('locked',!unlocked);const cd=P.cd[i];x.querySelector('.cool').textContent=!unlocked?'LOCK':cd>0?cd.toFixed(1):'';x.disabled=!unlocked})}
-function announce(t,c='#fff'){const el=document.getElementById('announce');el.textContent=t;el.style.color=c;el.classList.remove('show');void el.offsetWidth;el.classList.add('show')}
 
-/* ---------- MATCHMAKING ---------- */
-function enemyForMMR(){const ri=rankIndex(save.mmr);const pool=heroes.filter(h=>h.id!==save.selected);const h=pick(pool);enemyDifficulty=['Easy','Medium','Hard','Nightmare'][Math.min(3,Math.floor(ri/2)+1+((save.mmr>1800)?1:0))]||'Easy';return h}
-function startMatch(){
- audioInit();const panel=document.getElementById('matchPanel');panel.classList.remove('hidden');let t=0;matchCancel=false;const iv=setInterval(()=>{if(matchCancel){clearInterval(iv);return}t+=.1;document.getElementById('matchTimer').textContent=t.toFixed(1)+'s';if(t>1.5){clearInterval(iv);panel.classList.add('hidden');beginBattle(enemyForMMR())}},100);
+/* =========================
+   SHOTS
+========================= */
+
+function drawShots(){
+
+ for(
+  const p of shots
+ ){
+
+  ctx.fillStyle=p.c;
+
+  ctx.fillRect(
+   Math.round(p.x-p.r),
+   Math.round(p.y-p.r),
+   p.r*2,
+   p.r*2
+  );
+
+  ctx.fillStyle='#fff';
+
+  ctx.fillRect(
+   Math.round(p.x-2),
+   Math.round(p.y-2),
+   4,
+   4
+  );
+ }
 }
-function beginBattle(enemyHero){ensureHero(save.selected);P=fighter(HERO[save.selected],'p');E=fighter(enemyHero,'e');timeLeft=60;gameStart=performance.now();gameRunning=true;hudHidden=false;document.getElementById('menuPanel').classList.add('hidden');document.getElementById('resultPanel').classList.add('hidden');document.getElementById('hud').classList.remove('hidden');document.getElementById('skillBar').innerHTML='';updateHUD();announce('FIGHT!','#ffd24d');beep('ult',180,.2)}
-function finishBattle(){if(!P||!E)return;gameRunning=false;let win=!P.dead&&E.dead;let draw=!P.dead&&!E.dead;let gold=win?180:(draw?90:70),gems=win?9:(draw?4:2),elo=win?25:(draw?5:-15);save.gold+=gold;save.gems+=gems;save.mmr=clamp(save.mmr+elo,0,99999);if(win)save.wins++;else if(!draw)save.losses++;saveGame();document.getElementById('hud').classList.add('hidden');document.getElementById('resultPanel').classList.remove('hidden');document.getElementById('resultTitle').textContent=win?'VICTORY':draw?'DRAW':'DEFEAT';document.getElementById('resultTitle').style.color=win?'#ffd24d':draw?'#b9c5de':'#ff6575';document.getElementById('resultSub').textContent=win?`Bạn hạ ${E.hero.name} — Rank ${currentRank().name}`:draw?'Hòa trận':`${E.hero.name} thắng — cố lên!`;document.getElementById('reward').innerHTML=`<div class="chip gold">+${gold} GOLD</div><div class="chip gem">+${gems} GEMS</div><div class="chip">${elo>=0?'+':''}${elo} MMR</div>`;renderAll()}
 
-/* ---------- INPUT ---------- */
-const keys={};let jumpLock=false;
-addEventListener('keydown',e=>{const k=e.key.toLowerCase();if(['arrowleft','arrowright','a','d','j','q','w','e','r',' ','p','1','2','3','4'].includes(k))e.preventDefault();if(k==='p'){hudHidden=!hudHidden;document.getElementById('hud').classList.toggle('hidden',hudHidden||!gameRunning);return}if(k==='1')keys.q=true;if(k==='2')keys.w=true;if(k==='3')keys.e=true;if(k==='4')keys.r=true;keys[k]=true});
-addEventListener('keyup',e=>{keys[e.key.toLowerCase()]=false});
-document.querySelectorAll('[data-key]').forEach(b=>{const k=b.dataset.key;b.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true});b.addEventListener('pointerup',e=>{e.preventDefault();keys[k]=false});b.addEventListener('pointercancel',e=>{keys[k]=false});b.addEventListener('pointerleave',e=>{keys[k]=false})});
-document.querySelectorAll('[data-hold]').forEach(b=>{const k=b.dataset.hold;b.addEventListener('pointerdown',e=>{e.preventDefault();keys[k]=true});['pointerup','pointercancel','pointerleave'].forEach(ev=>b.addEventListener(ev,()=>keys[k]=false))});
 
-/* ---------- MAIN LOOP ---------- */
-function gameTick(now){const dt=Math.min(.033,(now-last)/1000);last=now;if(gameRunning){if(hitStop>0){hitStop-=dt}else{timeLeft-=dt;playerControl();cpuAI(dt);updateFighter(P,E,dt);updateFighter(E,P,dt);updateProjectiles(dt);updateEffects(dt);updateParticles(dt);if(timeLeft<=0||P.dead||E.dead){if(timeLeft<=0&&!P.dead&&!E.dead){if(P.hp>E.hp)E.dead=true;else if(P.hp<E.hp)P.dead=true}finishBattle()}}updateHUD()}requestAnimationFrame(gameTick)}requestAnimationFrame(gameTick);render();
+/* =========================
+   EFFECT DRAW
+========================= */
 
-/* ---------- BUTTONS ---------- */
-document.getElementById('matchBtn').onclick=startMatch;document.getElementById('cancelMatch').onclick=()=>{matchCancel=true;document.getElementById('matchPanel').classList.add('hidden')};document.getElementById('rematchBtn').onclick=()=>{document.getElementById('resultPanel').classList.add('hidden');startMatch()};document.getElementById('menuBtn').onclick=()=>{document.getElementById('resultPanel').classList.add('hidden');document.getElementById('menuPanel').classList.remove('hidden');renderAll()};document.getElementById('resetBtn').onclick=()=>{if(confirm('Xóa toàn bộ tiến trình?')){localStorage.removeItem(SAVE_KEY);save=defaultSave();renderAll();toast('Đã reset save')}};
+function drawFx(){
 
-/* ---------- INIT ---------- */
-ensureHero(save.selected);renderAll();
+ for(
+  const e of fx
+ ){
+
+  ctx.globalAlpha=
+   clamp(
+    e.life/.8,
+    0,
+    1
+   );
+
+
+/* beam */
+
+  if(e.t==='beam'){
+
+   const a=e.a;
+
+   ctx.fillStyle=
+    a.hero.color;
+
+   ctx.fillRect(
+    a.x,
+    a.y-a.h*.6,
+    a.dir*450,
+    14
+   );
+
+   ctx.fillStyle='#fff';
+
+   ctx.fillRect(
+    a.x,
+    a.y-a.h*.6,
+    a.dir*370,
+    4
+   );
+  }
+
+
+/* bind */
+
+  else if(
+   e.t==='bind'
+  ){
+
+   const a=e.a;
+
+   ctx.strokeStyle=
+    a.hero.color;
+
+   ctx.lineWidth=6;
+
+   ctx.beginPath();
+
+   ctx.arc(
+    a.x+a.dir*120,
+    a.y-48,
+    72,
+    0,
+    Math.PI*2
+   );
+
+   ctx.stroke();
+  }
+
+
+/* shockwave */
+
+  else if(
+   e.t==='shock'
+  ){
+
+   const a=e.a;
+
+   ctx.strokeStyle=
+    a.hero.color;
+
+   ctx.lineWidth=7;
+
+   ctx.beginPath();
+
+   ctx.arc(
+    a.x,
+    G-91,
+    35+
+    (1-e.life/.5)*120,
+    0,
+    Math.PI*2
+   );
+
+   ctx.stroke();
+  }
+
+
+/* Ultimate */
+
+  else if(
+   e.t==='ult'
+  ){
+
+   const a=e.a;
+   const id=a.hero.id;
+   const p=
+    1-e.life/1.15;
+
+
+/* Thor / Storm */
+
+   if([
+    'thor',
+    'storm'
+   ].includes(id)){
+
+    ctx.fillStyle='#b8d8ff';
+
+    for(
+     let n=0;
+     n<15;
+     n++
+    ){
+
+     ctx.fillRect(
+      a.x+rand(-440,440),
+      G-90-rand(130,420),
+      rand(3,8),
+      rand(30,95)
+     );
+    }
+
+   }
+
+
+/* Lasers */
+
+   else if([
+    'ironman',
+    'warmachine',
+    'captainmarvel',
+    'cyclops',
+    'vision'
+   ].includes(id)){
+
+    ctx.fillStyle=
+     a.hero.color;
+
+    ctx.fillRect(
+     a.x,
+     a.y-a.h*.6,
+     a.dir*520,
+     18
+    );
+
+    ctx.fillStyle='#fff';
+
+    ctx.fillRect(
+     a.x,
+     a.y-a.h*.6,
+     a.dir*430,
+     5
+    );
+
+   }
+
+
+/* Magic */
+
+   else if([
+    'doctorstrange',
+    'scarletwitch',
+    'jeangrey',
+    'magneto',
+    'loki',
+    'thanos',
+    'apocalypse'
+   ].includes(id)){
+
+    ctx.strokeStyle=
+     a.hero.color;
+
+    ctx.lineWidth=9;
+
+    ctx.beginPath();
+
+    ctx.arc(
+     a.x+a.dir*100,
+     a.y-48,
+     100+p*100,
+     0,
+     Math.PI*2
+    );
+
+    ctx.stroke();
+
+    for(
+     let n=0;
+     n<14;
+     n++
+    ){
+
+     const q=
+      n*Math.PI/7+
+      p*5;
+
+     ctx.fillStyle=
+      a.hero.color;
+
+     ctx.fillRect(
+      a.x+
+      Math.cos(q)*170,
+      a.y-48+
+      Math.sin(q)*125,
+      6,
+      6
+     );
+    }
+
+   }
+
+
+/* Ground smash */
+
+   else if([
+    'hulk',
+    'shehulk',
+    'groot',
+    'colossus'
+   ].includes(id)){
+
+    ctx.strokeStyle=
+     a.hero.color;
+
+    ctx.lineWidth=12;
+
+    ctx.beginPath();
+
+    ctx.arc(
+     a.x,
+     G-90,
+     90+p*180,
+     0,
+     Math.PI*2
+    );
+
+    ctx.stroke();
+
+    for(
+     let n=0;
+     n<12;
+     n++
+    ){
+
+     ctx.fillRect(
+      a.x+rand(-220,220),
+      G-105,
+      rand(4,10),
+      rand(20,60)
+     );
+    }
+
+   }
+
+
+/* Ghost Rider */
+
+   else if(
+    id==='ghostrider'
+   ){
+
+    ctx.fillStyle='#ff7b32';
+
+    ctx.fillRect(
+     a.x+a.dir*20,
+     a.y-a.h*.65,
+     a.dir*400,
+     22
+    );
+
+   }
+
+
+/* Default cinematic */
+
+   else{
+
+    ctx.strokeStyle=
+     a.hero.color;
+
+    ctx.lineWidth=8;
+
+    for(
+     let n=0;
+     n<9;
+     n++
+    ){
+
+     ctx.beginPath();
+
+     ctx.moveTo(
+      a.x+a.dir*20,
+      a.y-55
+     );
+
+     ctx.lineTo(
+      a.x+
+       a.dir*
+       rand(100,300),
+      a.y-
+       rand(30,150)
+     );
+
+     ctx.stroke();
+    }
+   }
+  }
+
+
+/* hit */
+
+  else if(
+   e.t==='hit'
+  ){
+
+   ctx.fillStyle=e.c;
+
+   ctx.fillRect(
+    e.x-10,
+    e.y-10,
+    20,
+    20
+   );
+  }
+
+  ctx.globalAlpha=1;
+ }
+
+
+/* KILL ANIMATION */
+
+ if(ko){
+
+  ctx.save();
+
+  ctx.globalAlpha=
+   clamp(
+    ko.life/1.8,
+    0,
+    1
+   );
+
+  ctx.fillStyle='#fff';
+
+  ctx.fillRect(
+   0,
+   0,
+   W,
+   H
+  );
+
+  ctx.globalAlpha=.86;
+
+  ctx.fillStyle='#050711';
+
+  ctx.textAlign='center';
+
+  ctx.font=
+   '900 66px monospace';
+
+  ctx.fillText(
+   'K.O.',
+   W/2,
+   245
+  );
+
+  ctx.font=
+   '900 18px monospace';
+
+  ctx.fillStyle=
+   ko.attacker
+    ?ko.attacker.hero.color
+    :'#ffd34d';
+
+  ctx.fillText(
+   ko.attacker
+    ?ko.attacker.hero.name+' FINISH'
+    :'FINISH',
+   W/2,
+   278
+  );
+
+  ctx.restore();
+ }
+}
+
+
+/* =========================
+   PARTICLE DRAW
+========================= */
+
+function drawParticles(){
+
+ for(
+  const p of particles
+ ){
+
+  ctx.globalAlpha=
+   clamp(
+    p.life/p.max,
+    0,
+    1
+   );
+
+  ctx.fillStyle=p.c;
+
+  ctx.fillRect(
+   Math.round(p.x),
+   Math.round(p.y),
+   p.s,
+   p.s
+  );
+ }
+
+ ctx.globalAlpha=1;
+
+ ctx.textAlign='center';
+
+ for(
+  const f of floats
+ ){
+
+  ctx.globalAlpha=
+   clamp(
+    f.life/f.max,
+    0,
+    1
+   );
+
+  ctx.fillStyle=f.c;
+
+  ctx.font=
+   `900 ${f.s}px monospace`;
+
+  ctx.fillText(
+   f.t,
+   Math.round(f.x),
+   Math.round(f.y)
+  );
+ }
+
+ ctx.globalAlpha=1;
+
+ ctx.textAlign='left';
+}
+
+
+/* =========================
+   RENDER LOOP
+========================= */
+
+function renderGame(){
+
+ let sx=0;
+ let sy=0;
+
+ if(shake>0){
+
+  shake=
+   Math.max(
+    0,
+    shake-.016
+   );
+
+  sx=rand(-8,8);
+  sy=rand(-5,5);
+ }
+
+ ctx.save();
+
+ ctx.translate(
+  sx,
+  sy
+ );
+
+ bg();
+
+ if(
+  P&&
+  E&&
+  phase==='battle'
+ ){
+
+  drawShots();
+
+  drawFx();
+
+  drawHero(P);
+
+  drawHero(E);
+
+  drawParticles();
+ }
+
+ ctx.restore();
+
+ requestAnimationFrame(
+  renderGame
+ );
+}
+
+
+/* =========================
+   HUD
+========================= */
+
+function hud(){
+
+ if(!P||!E)
+  return;
+
+ document.getElementById('pn').textContent=
+  `${P.hero.emoji} ${P.hero.name}`;
+
+ document.getElementById('en').textContent=
+  `${E.hero.emoji} ${E.hero.name} [${difficulty}]`;
+
+ document.getElementById('ph').style.width=
+  (P.hp/P.hero.hp*100)+'%';
+
+ document.getElementById('eh').style.width=
+  (E.hp/E.hero.hp*100)+'%';
+
+ document.getElementById('pm').style.width=
+  P.mana+'%';
+
+ document.getElementById('em').style.width=
+  E.mana+'%';
+
+ document.getElementById('timer').textContent=
+  Math.max(
+   0,
+   Math.ceil(time)
+  );
+
+ const c=
+  document.getElementById('combo');
+
+ c.textContent=
+  P.combo+
+  ' HIT COMBO';
+
+ c.classList.toggle(
+  'on',
+  P.combo>1
+ );
+
+ const bar=
+  document.getElementById(
+   'skillbar'
+  );
+
+ if(
+  bar.childElementCount!==4
+ ){
+
+  bar.innerHTML=
+   P.hero.moves.map(
+    (n,i)=>`
+     <button
+      class="slot"
+      data-s="${i}"
+     >
+      <small>
+       ${
+        i
+         ?'M'+[20,30,55][i-1]
+         :'BASIC'
+       }
+      </small>
+      <b>${'QWER'[i]}</b>
+      <span>${n}</span>
+      <div class="cd"></div>
+     </button>
+    `
+   ).join('');
+
+  bar
+   .querySelectorAll('[data-s]')
+   .forEach(
+    b=>
+     b.onclick=()=>
+      use(
+       P,
+       E,
+       +b.dataset.s
+      )
+   );
+ }
+
+ bar
+  .querySelectorAll('.slot')
+  .forEach(
+   (b,i)=>{
+
+    const u=
+     unlocked(
+      P.hero.id,
+      i
+     );
+
+    const cd=
+     P.cd[i];
+
+    b.classList.toggle(
+     'lock',
+     !u
+    );
+
+    b.disabled=!u;
+
+    b.querySelector(
+     '.cd'
+    ).textContent=
+     !u
+      ?'LOCK'
+      :cd>0
+      ?cd.toFixed(1)
+      :'';
+   }
+  );
+}
+
+function announce(
+ text,
+ color='#fff'
+){
+
+ const a=
+  document.getElementById(
+   'announce'
+  );
+
+ a.textContent=text;
+
+ a.style.color=color;
+
+ a.classList.remove('on');
+
+ void a.offsetWidth;
+
+ a.classList.add('on');
+}
+
+
+/* =========================
+   MATCHMAKING
+========================= */
+
+let difficulty='Easy';
+
+function startMatch(){
+
+ if(
+  phase!=='menu'
+ )
+  return;
+
+ audio();
+
+ phase='match';
+
+ matchT=0;
+
+ document
+  .getElementById('menu')
+  .classList
+  .add('hidden');
+
+ document
+  .getElementById('match')
+  .classList
+  .remove('hidden');
+
+ document.getElementById('ms')
+  .textContent=
+   `MMR ${save.mmr} • ${ranks[rankIndex(save.mmr)][0]}`;
+
+ clearInterval(
+  matchTimerID
+ );
+
+ matchTimerID=
+  setInterval(
+   ()=>{
+
+    matchT+=.1;
+
+    document.getElementById('mt')
+     .textContent=
+      matchT.toFixed(1)+'s';
+
+    if(
+     matchT>=1.5
+    ){
+
+     clearInterval(
+      matchTimerID
+     );
+
+     beginBattle();
+    }
+
+   },
+   100
+  );
+}
+
+
+/* =========================
+   BEGIN
+========================= */
+
+function beginBattle(){
+
+ phase='battle';
+
+ ending=false;
+
+ time=60;
+
+ matchClock=0;
+
+ difficulty=
+  [
+   'Easy',
+   'Easy',
+   'Medium',
+   'Hard',
+   'Hard',
+   'Nightmare',
+   'Nightmare'
+  ][
+   rankIndex(save.mmr)
+  ];
+
+ const enemy=
+  pick(
+   HEROES.filter(
+    h=>h.id!==save.selected
+   )
+  );
+
+ P=
+  fighter(
+   HERO[save.selected],
+   'p',
+   [true,false,false,false]
+  );
+
+ E=
+  fighter(
+   enemy,
+   'e',
+   difficulty==='Easy'
+    ?[true,false,false,false]
+    :difficulty==='Medium'
+    ?[true,true,false,false]
+    :difficulty==='Hard'
+    ?[true,true,true,false]
+    :[true,true,true,true]
+  );
+
+ particles=[];
+
+ shots=[];
+
+ fx=[];
+
+ floats=[];
+
+ ko=null;
+
+ hitStop=0;
+
+ shake=0;
+
+ document
+  .getElementById('match')
+  .classList
+  .add('hidden');
+
+ document
+  .getElementById('result')
+  .classList
+  .add('hidden');
+
+ document
+  .getElementById('hud')
+  .classList
+  .remove('hidden');
+
+ hudHidden=false;
+
+ document
+  .getElementById('skillbar')
+  .innerHTML='';
+
+ hud();
+
+ announce(
+  'FIGHT!',
+  '#ffd34d'
+ );
+
+ beep(
+  170,
+  .22,
+  'sawtooth',
+  .06
+ );
+}
+
+
+/* =========================
+   TIMEOUT
+========================= */
+
+function forceEnd(){
+
+ if(
+  P.dead||
+  E.dead
+ )
+  return;
+
+ if(
+  P.hp===E.hp
+ ){
+
+  hurt(
+   E,
+   9999,
+   0,
+   0,
+   P,
+   true
+  );
+
+ }
+ else if(
+  P.hp>E.hp
+ ){
+
+  hurt(
+   E,
+   9999,
+   0,
+   0,
+   P,
+   true
+  );
+
+ }
+ else{
+
+  hurt(
+   P,
+   9999,
+   0,
+   0,
+   E,
+   true
+  );
+ }
+}
+
+
+/* =========================
+   FINAL RESULT
+========================= */
+
+function finish(){
+
+ if(ending)
+  return;
+
+ ending=true;
+
+ phase='result';
+
+ document
+  .getElementById('hud')
+  .classList
+  .add('hidden');
+
+ const win=
+  !P.dead&&E.dead;
+
+ const draw=
+  !P.dead&&!E.dead;
+
+ const goldReward=
+  win
+   ?190
+   :draw
+   ?100
+   :75;
+
+ const gemReward=
+  win
+   ?10
+   :draw
+   ?4
+   :2;
+
+ const mmrDelta=
+  win
+   ?25
+   :draw
+   ?5
+   :-15;
+
+ save.gold+=goldReward;
+
+ save.gems+=gemReward;
+
+ save.mmr=
+  clamp(
+   save.mmr+mmrDelta,
+   0,
+   99999
+  );
+
+ if(win)
+  save.wins++;
+
+ else if(!draw)
+  save.losses++;
+
+ saveIt();
+
+ render();
+
+ document
+  .getElementById('resultTitle')
+  .textContent=
+   win
+    ?'VICTORY'
+    :draw
+    ?'DRAW'
+    :'DEFEAT';
+
+ document
+  .getElementById('resultTitle')
+  .style.color=
+   win
+    ?'#ffd34d'
+    :draw
+    ?'#b9c5de'
+    :'#ff6575';
+
+ document
+  .getElementById('resultSub')
+  .textContent=
+   win
+    ?`Bạn hạ ${E.hero.name} • ${difficulty} AI`
+    :draw
+    ?'Hòa trận'
+    :`${E.hero.name} thắng bạn`;
+
+ document
+  .getElementById('reward')
+  .innerHTML=`
+   <div class="chip gold">
+    +${goldReward} GOLD
+   </div>
+
+   <div class="chip gem">
+    +${gemReward} GEMS
+   </div>
+
+   <div class="chip">
+    ${mmrDelta>=0?'+':''}${mmrDelta} MMR
+   </div>
+  `;
+
+ document
+  .getElementById('result')
+  .classList
+  .remove('hidden');
+}
+
+
+/* =========================
+   INPUT
+========================= */
+
+addEventListener(
+ 'keydown',
+ e=>{
+
+  const k=
+   e.key.toLowerCase();
+
+  if([
+   'a',
+   'd',
+   'arrowleft',
+   'arrowright',
+   'j',
+   'q',
+   'w',
+   'e',
+   'r',
+   '1',
+   '2',
+   '3',
+   '4',
+   ' ',
+   'arrowup',
+   'p'
+  ].includes(k))
+   e.preventDefault();
+
+  if(
+   k==='p'&&
+   phase==='battle'
+  ){
+
+   hudHidden=!hudHidden;
+
+   document
+    .getElementById('hud')
+    .classList.toggle(
+     'hidden',
+     hudHidden
+    );
+
+   return;
+  }
+
+  if(k==='1')
+   keys.q=true;
+
+  if(k==='2')
+   keys.w=true;
+
+  if(k==='3')
+   keys.e=true;
+
+  if(k==='4')
+   keys.r=true;
+
+  keys[k]=true;
+ }
+);
+
+addEventListener(
+ 'keyup',
+ e=>{
+
+  const k=
+   e.key.toLowerCase();
+
+  keys[k]=false;
+
+  if([
+   '1',
+   '2',
+   '3',
+   '4'
+  ].includes(k)){
+
+   keys[
+    {
+     1:'q',
+     2:'w',
+     3:'e',
+     4:'r'
+    }[k]
+   ]=false;
+  }
+ }
+);
+
+
+/* PE CONTROLS */
+
+document
+ .querySelectorAll('[data-hold]')
+ .forEach(
+  b=>{
+
+   const k=
+    b.dataset.hold;
+
+   const down=
+    e=>{
+
+     e.preventDefault();
+
+     keys[k]=true;
+    };
+
+   const up=
+    e=>{
+
+     e.preventDefault();
+
+     keys[k]=false;
+    };
+
+   b.addEventListener(
+    'pointerdown',
+    down
+   );
+
+   b.addEventListener(
+    'pointerup',
+    up
+   );
+
+   b.addEventListener(
+    'pointercancel',
+    up
+   );
+
+   b.addEventListener(
+    'pointerleave',
+    up
+   );
+  }
+);
+
+document
+ .querySelectorAll('[data-key]')
+ .forEach(
+  b=>{
+
+   const k=
+    b.dataset.key;
+
+   const down=
+    e=>{
+
+     e.preventDefault();
+
+     keys[k]=true;
+    };
+
+   const up=
+    e=>{
+
+     e.preventDefault();
+
+     keys[k]=false;
+    };
+
+   b.addEventListener(
+    'pointerdown',
+    down
+   );
+
+   b.addEventListener(
+    'pointerup',
+    up
+   );
+
+   b.addEventListener(
+    'pointercancel',
+    up
+   );
+
+   b.addEventListener(
+    'pointerleave',
+    up
+   );
+  }
+);
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+document
+ .getElementById('matchBtn')
+ .onclick=
+  startMatch;
+
+document
+ .getElementById('cancel')
+ .onclick=()=>{
+
+  clearInterval(
+   matchTimerID
+  );
+
+  phase='menu';
+
+  document
+   .getElementById('match')
+   .classList
+   .add('hidden');
+
+  document
+   .getElementById('menu')
+   .classList
+   .remove('hidden');
+};
+
+document
+ .getElementById('rematch')
+ .onclick=()=>{
+
+  document
+   .getElementById('result')
+   .classList
+   .add('hidden');
+
+  phase='menu';
+
+  startMatch();
+};
+
+document
+ .getElementById('main')
+ .onclick=()=>{
+
+  phase='menu';
+
+  document
+   .getElementById('result')
+   .classList
+   .add('hidden');
+
+  document
+   .getElementById('menu')
+   .classList
+   .remove('hidden');
+
+  render();
+};
+
+document
+ .getElementById('resetBtn')
+ .onclick=()=>{
+
+  if(
+   !confirm(
+    'Xóa toàn bộ save?'
+   )
+  )
+   return;
+
+  localStorage.removeItem(
+   SAVE
+  );
+
+  save={
+   gold:1400,
+   gems:120,
+   mmr:120,
+   wins:0,
+   losses:0,
+   selected:'spiderman',
+   owned:{
+    spiderman:true,
+    ironman:true,
+    thor:true,
+    hulk:true,
+    doctorstrange:true,
+    scarletwitch:true
+   }
+  };
+
+  HEROES.forEach(
+   h=>ensure(h.id)
+  );
+
+  saveIt();
+
+  render();
+
+  say(
+   'Đã reset save'
+  );
+};
+
+
+/* =========================
+   GAME LOOP
+========================= */
+
+function update(dt){
+
+ if(
+  phase!=='battle'
+ )
+  return;
+
+ if(
+  hitStop>0
+ ){
+
+  hitStop-=dt;
+
+  updParts(dt);
+
+  return;
+ }
+
+ time-=dt;
+
+ matchClock+=dt;
+
+ player();
+
+ ai(dt);
+
+ updF(
+  P,
+  E,
+  dt
+ );
+
+ updF(
+  E,
+  P,
+  dt
+ );
+
+ updShots(dt);
+
+ updFx(dt);
+
+ updParts(dt);
+
+
+/*
+ Chỉ mở Result sau kill animation.
+*/
+
+ if(
+  (P.dead||E.dead)&&
+  !ending
+ ){
+
+  const victim=
+   P.dead
+    ?P
+    :E;
+
+  if(
+   victim.koT<=0
+  ){
+
+   finish();
+
+   return;
+  }
+
+ }
+ else if(
+  time<=0
+ ){
+
+  forceEnd();
+ }
+
+ hud();
+}
+
+function loop(now){
+
+ const dt=
+  Math.min(
+   .033,
+   (now-last)/1000
+  );
+
+ last=now;
+
+ update(dt);
+
+ requestAnimationFrame(
+  loop
+ );
+}
+
+
+/* =========================
+   INIT
+========================= */
+
+HEROES.forEach(
+ h=>ensure(h.id)
+);
+
+saveIt();
+
+render();
+
+renderGame();
+
+requestAnimationFrame(
+ loop
+);
 </script>
 </body>
 </html>
